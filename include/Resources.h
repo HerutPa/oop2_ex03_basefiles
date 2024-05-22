@@ -20,7 +20,7 @@ enum Textures
     X_texture,
     Background,
     Back,
-    Six_colors,
+    Label,
     GameBackground,
     YouWin,
     YouLose
@@ -28,9 +28,9 @@ enum Textures
 
 enum Button
 {
-    Easy,
-    Medium,
-    Hard,
+    Play,
+    Continue,
+    Exit,
 };
 
 enum Score

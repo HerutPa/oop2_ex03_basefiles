@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <Resources.h>
-//#include "Hexagon.h"
+#include "Sticks.h"
 //#include "X.h"
 //#include "Graph.h"
 
@@ -21,7 +21,7 @@ public:
 	//const Colors getComputerColor();
 	//const Colors getPlayerColor();
 	//void playTurn(const bool, const Colors);
-	//void init();
+	void init();
 	//const int size()const;
 	//const int playerArea();
 	//const int computerArea();
@@ -34,11 +34,12 @@ public:
 private:
 	int m_row;
 	int m_col;
-	//std::vector<Hexagon> m_hexagons;
+	std::vector<Sticks> m_stick;
 	//sf::RectangleShape m_grid_frame[4];
 	//std::vector<sf::RectangleShape> m_rectangles;
 	//std::unique_ptr<X> m_PlayerX;
-	//std::unique_ptr<X> m_ComputerX;
+	//std::unique_ptr<X
+	// > m_ComputerX;
 	//sf::Sprite m_back;
 	//Graph<Hexagon> m_graph;
 	sf::Sprite m_backgroung;
