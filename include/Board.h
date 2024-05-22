@@ -11,7 +11,7 @@ class Board
 {
 public:
 	Board(const int, const int);
-	//void drawBoard(sf::RenderWindow&);
+	void drawBoard(sf::RenderWindow&);
 	//void setPlayerX(const Colors);
 	//void setComputerX(const Colors);
 	//const sf::RectangleShape getRectangle(const Colors) const;
@@ -41,11 +41,11 @@ private:
 	//std::unique_ptr<X
 	// > m_ComputerX;
 	//sf::Sprite m_back;
-	//Graph<Hexagon> m_graph;
+	Graph<Sticks> m_graph;
 	sf::Sprite m_backgroung;
 
 	////functions
-	//void createBoard();
+	void createBoard();
 	//void createRectangles();
 	//void connectNeighbors();
 	//void connectHexagonNeighbors(const int directions[6][2], const int, const int, Hexagon&);
