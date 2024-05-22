@@ -1,0 +1,12 @@
+﻿#configure_file ("Wall.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("X.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Background.png" ${CMAKE_BINARY_DIR} COPYONLY)
+
+configure_file ("Medium.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Hard.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Easy.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Back.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("Six_colors.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("GameBackground.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("YouWin.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("YouLose.png" ${CMAKE_BINARY_DIR} COPYONLY)
