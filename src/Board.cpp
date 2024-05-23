@@ -16,7 +16,7 @@ Board::Board(const int row, const int col)
 void Board::init()
 {
 	m_stick.clear();
-	m_graph.clear();
+	//m_graph.clear();
 	createBoard();
 	//connectNeighbors();
 }
@@ -41,7 +41,7 @@ void Board::createBoard()
 void Board::drawBoard(sf::RenderWindow& window)
 {
 	window.draw(m_backgroung);
-	for (int stick = 0; stick < m_stick.size(); stick++)
+	/*for (int stick = 0; stick < m_stick.size(); stick++)
 	{
 		window.draw(m_stick[stick].get());
 	}
@@ -52,8 +52,7 @@ void Board::drawBoard(sf::RenderWindow& window)
 	for (int rectangle = 0; rectangle < m_rectangles.size(); rectangle++)
 	{
 		window.draw(m_rectangles[rectangle]);
-	}
+	}*/
 
-	??window.draw(m_back);
-
+	//window.draw(m_back);
 }

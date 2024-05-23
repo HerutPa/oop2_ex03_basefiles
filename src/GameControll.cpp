@@ -94,17 +94,17 @@ void GameControll::startGame()
                 auto location = m_window.mapPixelToCoords(
                     { event.mouseButton.x, event.mouseButton.y });
 
-                if (m_player_turn)
-                {
-                    playerTurn(location);
-                    computerTurn(m_algorithm->getNextColor(m_board.getGraph(), m_board.getBoard(), m_board.computerArea()));
-                }
-                break;
+                //if (m_player_turn)
+                //{
+                //    playerTurn(location);
+                //    //computerTurn(m_algorithm->getNextColor(m_board.getGraph(), m_board.getBoard(), m_board.computerArea()));
+                //}
+                //break;
             }
             case sf::Event::MouseMoved:
             {
                 auto location = m_window.mapPixelToCoords(sf::Mouse::getPosition(m_window));
-                handleGameMouseMoved(location);
+                //handleGameMouseMoved(location);
                 break;
             }
 
