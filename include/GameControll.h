@@ -9,6 +9,8 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include <Toolbar.h>
+
 
 
 class GameControll
@@ -35,9 +37,13 @@ private:
 	void handleMenuMouseMoved(const sf::Vector2f);
 //	void handleGameMouseMoved(const sf::Vector2f);
 	void startGame();
+	void UpdateData();
 	void init();
 //	void computerTurn(Colors);
 //	void winLoop();
 //	void loseLoop();
 	void locateObjects();
+	sf::Clock m_GameClock;
+	sf::Clock m_MoveClock;
+	//ToolBar m_toolbar;
 };

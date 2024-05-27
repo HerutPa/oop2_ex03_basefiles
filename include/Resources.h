@@ -15,6 +15,15 @@ enum Colors
     Orange,
 };
 
+enum ToolBarWord
+{
+    AVAILABLE,
+    SCORE,
+    LEFT,
+    TAKE,
+    TIME 
+};
+
 enum Textures
 {
     X_texture,
@@ -43,9 +52,10 @@ enum Score
 const int WINDOW_HEIGHT = 800;
 const int WINDOW_WIDTH = 1400;
 
+
 //stick
-const int ROW = 26; //גובה 
-const int COL = 50; //רוחב
+const int ROW = 15; //גובה 
+const int COL = 10; //רוחב
 const int RADIUS = 80;
 const int OUTLINE = 3;
 const int LENGTH = 60;
@@ -54,7 +64,7 @@ const int WIDTH = 5;
 const float STICK_WIDTH = WIDTH + (2 * OUTLINE);
 const float STICK_LENGTH = LENGTH + (2 * OUTLINE);
 
-//const float HEX_WIDTH = RADIUS * std::sqrt(3.f) + (2*OUTLINE);
+const float HEX_WIDTH = RADIUS * std::sqrt(3.f) + (2*OUTLINE);
 //const float HEX_HEIGHT = 2.f * RADIUS + (2 * OUTLINE);
 //const float HEX_EDGH = 2 * RADIUS * sin(3.14159 / 3);
 //const int LENGTH = 30;
@@ -62,6 +72,8 @@ const float STICK_LENGTH = LENGTH + (2 * OUTLINE);
 //const int OUTLINE = 1;
 //const float STICK_WIDTH = WIDTH + (2 * OUTLINE);
 //const float STICK_LENGTH = LENGTH + (2 * OUTLINE);
+
+const int TOOL_BAR = 5;
 
 
 //grid
