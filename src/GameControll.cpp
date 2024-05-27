@@ -33,11 +33,11 @@ void GameControll::run()
                     handleMenuClick(location);
                     break;
                 }
-                /*case sf::Event::MouseMoved:
+                case sf::Event::MouseMoved:
                 {
                     auto location = m_window.mapPixelToCoords(sf::Mouse::getPosition(m_window));
                     handleMenuMouseMoved(location);
-                }*/
+                }
 
             }
             
@@ -45,6 +45,21 @@ void GameControll::run()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         {
             m_window.close();
+        }
+    }
+}
+
+void GameControll::handleMenuMouseMoved(const sf::Vector2f location)
+{
+    for (int button = Play; button <= Exit; button++)
+    {
+        if ((m_menu.getButton((Button)button).getGlobalBounds().contains(location)))
+        {
+            m_menu.ButtonPress((Button)button);
+        }
+        else
+        {
+            m_menu.ButtonRelease((Button)button);
         }
     }
 }
@@ -93,20 +108,13 @@ void GameControll::startGame()
             {
                 auto location = m_window.mapPixelToCoords(
                     { event.mouseButton.x, event.mouseButton.y });
-
-                //if (m_player_turn)
-                //{
-                //    playerTurn(location);
-                //    //computerTurn(m_algorithm->getNextColor(m_board.getGraph(), m_board.getBoard(), m_board.computerArea()));
-                //}
-                //break;
             }
-            case sf::Event::MouseMoved:
-            {
-                auto location = m_window.mapPixelToCoords(sf::Mouse::getPosition(m_window));
-                //handleGameMouseMoved(location);
-                break;
-            }
+            //case sf::Event::MouseMoved:
+            //{
+            //    auto location = m_window.mapPixelToCoords(sf::Mouse::getPosition(m_window));
+            //    //handleGameMouseMoved(location);
+            //    break;
+            //}
 
             case sf::Event::Closed:
                 m_window.close();

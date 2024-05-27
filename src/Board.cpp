@@ -27,7 +27,7 @@ void Board::createBoard()
 	{
 		for (int col = 0; col < m_col; ++col)
 		{
-			m_stick.push_back(Sticks(row, col));
+			m_stick.push_back(Sticks(row, col, 5));
 		}
 	}
 	if (m_stick[m_col - 1].getColor() == m_stick[m_row * m_col - m_col].getColor())
@@ -40,12 +40,13 @@ void Board::createBoard()
 //איך לצייר את תחילת המשחק . לפי מה ?
 void Board::drawBoard(sf::RenderWindow& window)
 {
-	window.draw(m_backgroung);
-	/*for (int stick = 0; stick < m_stick.size(); stick++)
+	//window.clear();
+	window.clear(sf::Color::Color(210, 210, 210));
+	for (int stick = 0; stick < m_stick.size(); stick++)
 	{
 		window.draw(m_stick[stick].get());
 	}
-	for (int rectangle = 0; rectangle < 4; rectangle++)
+	/*for (int rectangle = 0; rectangle < 4; rectangle++)
 	{
 		window.draw(m_grid_frame[rectangle]);
 	}

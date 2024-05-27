@@ -32,16 +32,17 @@ void Menu::drawMenu(sf::RenderWindow& window)const
 	}
 	window.draw(m_label);
 }
-//
-//void Menu::ButtonPress(const Button button)
-//{
-//	m_buttons[button].setColor(sf::Color::Color(255, 255, 255, 150));
-//}
-//
-//void Menu::ButtonRelease(const Button button)
-//{
-//	m_buttons[button].setColor(sf::Color::Color(255, 255, 255));
-//}
+
+void Menu::ButtonPress(const Button button)
+{
+	m_buttons[button].setColor(sf::Color::Color(255, 255, 255, 150));
+}
+
+
+void Menu::ButtonRelease(const Button button)
+{
+	m_buttons[button].setColor(sf::Color::Color(255, 255, 255));
+}
 
 void Menu::locateObjects()
 {

@@ -32,7 +32,7 @@ private:
 //	//functions
 //	void playerTurn(const sf::Vector2f);
 	void handleMenuClick(const sf::Vector2f);
-//	void handleMenuMouseMoved(const sf::Vector2f);
+	void handleMenuMouseMoved(const sf::Vector2f);
 //	void handleGameMouseMoved(const sf::Vector2f);
 	void startGame();
 	void init();
