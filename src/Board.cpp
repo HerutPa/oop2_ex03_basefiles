@@ -56,7 +56,10 @@ void Board::createBoard()
 	for (int row = 0; row < m_numOfStick; ++row)
 	{
 		m_stick.push_back(Sticks(row, 5));
+
 	}
+
+
 	/*if (m_stick[m_col - 1].getColor() == m_stick[m_row * m_col - m_col].getColor())
 	{
 		m_stick[COMPUTER_INDEX].get().setFillColor(Resources::instance().getColorArray()[Cyan]);

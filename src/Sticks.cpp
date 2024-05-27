@@ -5,7 +5,6 @@
 //אנחנו רוצים לייצר וקטור של הדוקים שכל אחד מהם ידע לחשב כלפי כל דוק שהודפס לפניו האם הוא נוגע בו מעליו.
 //2 יבדוק את 1 ואם הוא מעליו אז ל1 יירשם שיש משהו מעליו 
 //3 יבדוק את 2 ואז גם את 1 ויסמן לכל אחד מהם בהתאמה האם מספר 3 נמצא מעליו.
-
 Sticks::Sticks(const int row, const int length)
 	:  m_row(row)
 {
@@ -53,16 +52,14 @@ const sf::Color Sticks::getColor()const
 }
 
 
-//const sf::Vector2f Sticks::getPosition()const
-//{
-//	float x = m_col * STICK_WIDTH + ((m_row % 2 == 0) ? STICK_WIDTH / 2.f : 0.f) + (WINDOW_WIDTH/2)- (GRID_WIDTH/2) + RADIUS;
-//	float y = (m_row * (STICK_LENGTH * 3.f / 4.f) + (WINDOW_HEIGHT / 2) - (GRID_HEGHT / 2));
-//
-//	return sf::Vector2f(x, y);
-//}
-
 void Sticks::setColor(const Colors color)
 {
 	m_stick.setFillColor(Resources::instance().getColorArray()[color]);
 }
 
+bool Sticks::isOverlaped(const Sticks& stick1, const Sticks& stick2)
+{
+	//algooritem
+}
+
+void Sticks::addOverLapped(const Sticks)
