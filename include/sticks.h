@@ -8,12 +8,15 @@ class Sticks
 {
 public:
 	Sticks(const int row, const int length);
-    sf::RectangleShape& get();
+    sf::RectangleShape& getrec();
     const int getRow() const;
     const sf::Color getColor() const;
     const sf::Vector2f getPosition() const;
     void setColor(const Colors);
     static bool isOverlaped(const Sticks& stick1, const Sticks& stick2);
+
+    void addOverLapped(const std::shared_ptr<Sticks>& overlap);
+
 
 
 private:

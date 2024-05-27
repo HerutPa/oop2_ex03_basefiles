@@ -34,7 +34,7 @@ Sticks::Sticks(const int row, const int length)
 }
 
 
-sf::RectangleShape& Sticks::get()
+sf::RectangleShape& Sticks::getrec()
 {
 	return m_stick;
 }
@@ -59,7 +59,11 @@ void Sticks::setColor(const Colors color)
 
 bool Sticks::isOverlaped(const Sticks& stick1, const Sticks& stick2)
 {
-	//algooritem
+	return true;//algooritem
 }
 
-void Sticks::addOverLapped(const Sticks)
+void Sticks::addOverLapped(const std::shared_ptr<Sticks> &overlap)
+{
+	m_overlapped.push_back(overlap);
+}
+

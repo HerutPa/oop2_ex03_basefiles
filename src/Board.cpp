@@ -45,7 +45,7 @@ const sf::RectangleShape Board::createRectangle(const int index) const
 
 void Board::init()
 {
-	m_stick.clear();
+	m_sticks.clear();
 	//m_graph.clear();
 	createBoard();
 	//connectNeighbors();
@@ -55,7 +55,17 @@ void Board::createBoard()
 {
 	for (int row = 0; row < m_numOfStick; ++row)
 	{
-		m_stick.push_back(Sticks(row, 5));
+		auto temp = std::make_shared<Sticks>(row, 5);
+		
+		for (const auto& stick1 : m_sticks)
+		{
+			if (Sticks::isOverlaped(*temp.get(), *stick1.get()))
+			{
+				temp.get()->addOverLapped(stick1);
+				stick1.get()->addOverLapped(temp);
+			}
+		}
+		m_sticks.push_back(temp);
 
 	}
 
@@ -72,9 +82,9 @@ void Board::drawBoard(sf::RenderWindow& window)
 {
 	//window.clear();
 	window.clear(sf::Color::Color(210, 210, 210));
-	for (int stick = 0; stick < m_stick.size(); stick++)
+	for (int stick = 0; stick < m_sticks.size(); stick++)
 	{
-		window.draw(m_stick[stick].get());
+		window.draw(m_sticks[stick]->getrec());
 	}
 	/*for (int rectangle = 0; rectangle < 4; rectangle++)
 	{
