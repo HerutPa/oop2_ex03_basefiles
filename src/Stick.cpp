@@ -33,29 +33,22 @@ Stick::Stick(const int row, const int length)
 	m_stick.setOutlineColor(sf::Color::Black);
 	m_location.x = x;
 	m_location.y = y;
-	setBounds(x, y, STICK_WIDTH, length);
+	
 }
 
 
-void Stick::setBounds(float x, float y, float STICK_WIDTH, float length)
-{
-	m_bounds.left = x;
-	m_bounds.top = y;
-	m_bounds.width = STICK_WIDTH;
-	m_bounds.height = length;
-}
+
+
 
 sf::RectangleShape& Stick::getrec()
 {
 	return m_stick;
 }
 
-
 const int Stick::getIndex()const
 {
 	return m_index;
 }
-
 
 const sf::Color Stick::getColor()const
 {
@@ -66,8 +59,6 @@ const sf::Vector2f Stick::getLocation() const
 {
 	return m_location;
 }
-
-
 
 void Stick::setColor(const Colors color)
 {
@@ -88,6 +79,30 @@ bool Stick::isLocationInside(const sf::Vector2f& location) const
 {
 	return m_stick.getGlobalBounds().contains(location);
 }
+
+bool Stick::isEraseable(const std::shared_ptr<Stick>& currentStick)
+{
+	std::cout << "in  ";
+	for (auto it = currentStick-> + 1; it != m_overlapped.rend(); ++it)
+	{
+		std::cout << "in_loop  ";
+
+		if (getIndex() > (*it)->getIndex())
+		{
+			std::cout << "in_if   ";
+
+			return false;
+		}
+	}
+	return true;
+}
+
+bool Stick::isEraseable(const StickIterator& it)
+{
+	return false;
+}
+
+	
 
 
 

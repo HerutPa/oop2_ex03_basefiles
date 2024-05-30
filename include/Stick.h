@@ -13,13 +13,14 @@ public:
     const int getIndex() const;
     const sf::Color getColor() const;
     const sf::Vector2f getLocation() const;
-    void setColor(const Colors);
+    
     static bool isOverlaped(const Stick& stick1, const Stick& stick2);
-
     void addOverLapped(const std::shared_ptr<Stick>& overlap);
-
     bool isLocationInside(const sf::Vector2f& location) const;
- 
+    bool isEraseable (const std::shared_ptr<Stick>& currentStick);
+    bool isEraseable(const StickIterator& it); // חתימה של הפונקציה isEraseable
+
+
 
 
 
@@ -29,7 +30,8 @@ private:
     int m_index;
     sf::Vector2f m_location;
     sf::FloatRect m_bounds;
-    void setBounds(float x, float y, float STICK_WIDTH, float length);
-
+    
+    void setColor(const Colors);
+   
 
 };

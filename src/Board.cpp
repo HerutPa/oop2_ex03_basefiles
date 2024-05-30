@@ -47,23 +47,13 @@ void Board::findStick(const sf::Vector2f location)
 	{
 		if ((*it)->isLocationInside(location))
 		{
-			m_stick.erase((it + 1).base());
-			break;
-		}
-		else
-		{
-			continue;
+			if ((*it)->isEraseable(it))
+			{
+				m_stick.erase((it + 1).base());
+				break;
+			}	
 		}
 	}
-	std::cout << "no";
-}
-
-void Board::init()
-{
-	m_stick.clear();
-	//m_graph.clear();
-	createBoard();
-	//connectNeighbors();
 }
 
 void Board::createBoard()
@@ -89,6 +79,16 @@ void Board::createBoard()
 		m_stick[PLAYER_INDEX].get().setFillColor(Resources::instance().getColorArray()[Blue]);
 	}*/
 }
+
+void Board::init()
+{
+	m_stick.clear();
+	//m_graph.clear();
+	createBoard();
+	//connectNeighbors();
+}
+
+
 
 //איך לצייר את תחילת המשחק . לפי מה ?
 void Board::drawBoard(sf::RenderWindow& window)
