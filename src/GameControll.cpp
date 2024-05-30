@@ -1,4 +1,5 @@
 #include "GameControll.h"
+#include <iostream>
 
 GameControll::GameControll()
     :m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Pick Up Sticks"), m_game_over(false)
@@ -91,6 +92,8 @@ void GameControll::init()
     m_board.init();
 }
 
+
+
 void GameControll::startGame()
 {
     init();
@@ -112,6 +115,9 @@ void GameControll::startGame()
             {
                 auto location = m_window.mapPixelToCoords(
                     { event.mouseButton.x, event.mouseButton.y });
+                m_board.findStick(location);
+                break;
+
             }
             //case sf::Event::MouseMoved:
             //{
@@ -121,8 +127,10 @@ void GameControll::startGame()
             //}
 
             case sf::Event::Closed:
+            {
                 m_window.close();
                 break;
+            }
             }
         }
 

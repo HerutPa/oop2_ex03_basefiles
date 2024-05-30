@@ -16,7 +16,7 @@
 //	//set the num:
 //	m_info_num[AVAILABLE] = m_board.getAvailable();
 //	m_info_num[SCORE] = 0;
-//	m_info_num[LEFT] = m_board.getNumOfSticks();
+//	m_info_num[LEFT] = m_board.getNumOfStick();
 //	m_info_num[TAKE] = 0;
 //	m_info_num[TIME] = 0;
 //

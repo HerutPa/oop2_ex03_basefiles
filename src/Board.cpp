@@ -43,9 +43,23 @@ const sf::RectangleShape Board::createRectangle(const int index) const
 	return rec;
 }
 
+void Board::findStick(const sf::Vector2f location)
+{
+	for (auto it = m_stick.begin(); it != m_stick.end(); ++it)
+	{
+		if ((*it)->isLocationInside(location))
+		{
+			std::cout << "yes";
+			m_stick.erase(it);		
+			break;
+		}
+	}
+	std::cout << "no";
+}
+
 void Board::init()
 {
-	m_sticks.clear();
+	m_stick.clear();
 	//m_graph.clear();
 	createBoard();
 	//connectNeighbors();
@@ -55,17 +69,17 @@ void Board::createBoard()
 {
 	for (int row = 0; row < m_numOfStick; ++row)
 	{
-		auto temp = std::make_shared<Sticks>(row, 5);
+		auto temp = std::make_shared<Stick>(row, 5);
 		
-		for (const auto& stick1 : m_sticks)
+		for (const auto& stick1 : m_stick)
 		{
-			if (Sticks::isOverlaped(*temp.get(), *stick1.get()))
+			if (Stick::isOverlaped(*temp.get(), *stick1.get()))
 			{
 				temp.get()->addOverLapped(stick1);
 				stick1.get()->addOverLapped(temp);
 			}
 		}
-		m_sticks.push_back(temp);
+		m_stick.push_back(temp);
 
 	}
 
@@ -82,9 +96,9 @@ void Board::drawBoard(sf::RenderWindow& window)
 {
 	//window.clear();
 	window.clear(sf::Color::Color(210, 210, 210));
-	for (int stick = 0; stick < m_sticks.size(); stick++)
+	for (int stick = 0; stick < m_stick.size(); stick++)
 	{
-		window.draw(m_sticks[stick]->getrec());
+		window.draw(m_stick[stick]->getrec());
 	}
 	/*for (int rectangle = 0; rectangle < 4; rectangle++)
 	{

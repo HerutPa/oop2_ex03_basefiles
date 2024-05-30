@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Sticks.h"
+#include "Stick.h"
 
 //אנחנו רוצים לייצר וקטור של הדוקים שכל אחד מהם ידע לחשב כלפי כל דוק שהודפס לפניו האם הוא נוגע בו מעליו.
 //2 יבדוק את 1 ואם הוא מעליו אז ל1 יירשם שיש משהו מעליו 
 //3 יבדוק את 2 ואז גם את 1 ויסמן לכל אחד מהם בהתאמה האם מספר 3 נמצא מעליו.
-Sticks::Sticks(const int row, const int length)
+Stick::Stick(const int row, const int length)
 	:  m_row(row)
 {
 	std::random_device rd;                       // Obtain a random seed from the hardware
@@ -31,39 +31,58 @@ Sticks::Sticks(const int row, const int length)
 	m_stick.setFillColor(Resources::instance().getColorArray()[randomNumColor]);
 	m_stick.setOutlineThickness(OUTLINE);
 	m_stick.setOutlineColor(sf::Color::Black);
+	m_location.x = x;
+	m_location.y = y;
+	setBounds(x, y, STICK_WIDTH, length);
 }
 
 
-sf::RectangleShape& Sticks::getrec()
+void Stick::setBounds(float x, float y, float STICK_WIDTH, float length)
+{
+	m_bounds.left = x;
+	m_bounds.top = y;
+	m_bounds.width = STICK_WIDTH;
+	m_bounds.height = length;
+}
+
+sf::RectangleShape& Stick::getrec()
 {
 	return m_stick;
 }
 
 
-const int Sticks::getRow()const
+const int Stick::getRow()const
 {
 	return m_row;
 }
 
 
-const sf::Color Sticks::getColor()const
+const sf::Color Stick::getColor()const
 {
 	return m_stick.getFillColor();
 }
 
+const sf::Vector2f Stick::getLocation() const
+{
+	return m_location;
+}
 
-void Sticks::setColor(const Colors color)
+
+
+void Stick::setColor(const Colors color)
 {
 	m_stick.setFillColor(Resources::instance().getColorArray()[color]);
 }
 
-bool Sticks::isOverlaped(const Sticks& stick1, const Sticks& stick2)
+bool Stick::isOverlaped(const Stick& stick1, const Stick& stick2)
 {
 	return true;//algooritem
 }
 
-void Sticks::addOverLapped(const std::shared_ptr<Sticks> &overlap)
+void Stick::addOverLapped(const std::shared_ptr<Stick> &overlap)
 {
 	m_overlapped.push_back(overlap);
 }
+
+
 
