@@ -17,8 +17,7 @@ public:
     static bool isOverlaped(const Stick& stick1, const Stick& stick2);
     void addOverLapped(const std::shared_ptr<Stick>& overlap);
     bool isLocationInside(const sf::Vector2f& location) const;
-    bool isEraseable (const std::shared_ptr<Stick>& currentStick);
-    bool isEraseable(const StickIterator& it); // חתימה של הפונקציה isEraseable
+    bool isEraseable ();
 
 
 

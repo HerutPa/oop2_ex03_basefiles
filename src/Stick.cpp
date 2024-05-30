@@ -80,27 +80,22 @@ bool Stick::isLocationInside(const sf::Vector2f& location) const
 	return m_stick.getGlobalBounds().contains(location);
 }
 
-bool Stick::isEraseable(const std::shared_ptr<Stick>& currentStick)
+bool Stick::isEraseable()
 {
-	std::cout << "in  ";
-	for (auto it = currentStick-> + 1; it != m_overlapped.rend(); ++it)
-	{
-		std::cout << "in_loop  ";
-
-		if (getIndex() > (*it)->getIndex())
-		{
-			std::cout << "in_if   ";
-
-			return false;
-		}
-	}
 	return true;
 }
 
-bool Stick::isEraseable(const StickIterator& it)
-{
-	return false;
-}
+//bool Stick::isEraseable(const std::shared_ptr<Stick>& currentStick)
+//{
+//	for (auto it = currentStick-> + 1; it != m_overlapped.rend(); ++it)
+//	{
+//		if (getIndex() > (*it)->getIndex())
+//		{
+//			return false;
+//		}
+//	}
+//	return true;
+//}
 
 	
 

@@ -44,12 +44,13 @@ const sf::RectangleShape Board::createRectangle(const int index) const
 void Board::findStick(const sf::Vector2f location)
 {
 	for (auto it = m_stick.rbegin(); it != m_stick.rend(); it++)
+	//for (const auto & stick: m_stick)	
 	{
 		if ((*it)->isLocationInside(location))
 		{
-			if ((*it)->isEraseable(it))
+			if ((*it)->isEraseable())
 			{
-				m_stick.erase((it + 1).base());
+				m_stick.erase((it + 1).base()); // המרת reverse_iterator לאיטרטור רגיל ואז מחיקת האיבר
 				break;
 			}	
 		}
