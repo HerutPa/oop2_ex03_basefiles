@@ -6,7 +6,7 @@
 //2 יבדוק את 1 ואם הוא מעליו אז ל1 יירשם שיש משהו מעליו 
 //3 יבדוק את 2 ואז גם את 1 ויסמן לכל אחד מהם בהתאמה האם מספר 3 נמצא מעליו.
 Stick::Stick(const int row, const int length)
-	:  m_row(row)
+	:  m_index(row)
 {
 	std::random_device rd;                       // Obtain a random seed from the hardware
 	std::mt19937 generator(rd());                 // Initialize the random number generator
@@ -51,9 +51,9 @@ sf::RectangleShape& Stick::getrec()
 }
 
 
-const int Stick::getRow()const
+const int Stick::getIndex()const
 {
-	return m_row;
+	return m_index;
 }
 
 
@@ -82,6 +82,11 @@ bool Stick::isOverlaped(const Stick& stick1, const Stick& stick2)
 void Stick::addOverLapped(const std::shared_ptr<Stick> &overlap)
 {
 	m_overlapped.push_back(overlap);
+}
+
+bool Stick::isLocationInside(const sf::Vector2f& location) const
+{
+	return m_stick.getGlobalBounds().contains(location);
 }
 
 

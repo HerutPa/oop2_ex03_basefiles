@@ -2,20 +2,18 @@
 
 #include "Board.h"
 #include <iostream>
+#include <iterator>
 
 
-Board::Board(/*const int row, const int col*/)
-	//:m_row(row), m_col(col)/*, m_graph(row* col)*/
+
+Board::Board()
 {
-	
-	//m_backgroung.setTexture(Resources::instance().getTexture(GameBackground));
-	//m_backgroung.scale(2.6f, 2.6f);
 	createRectangles();
 	//createGridFrame();
 	//locateObjects();
 	std::random_device rd; // מקור למספרים רנדומליים
 	std::mt19937 gen(rd()); // מחולל מספרים רנדומליים ממשפחת mersenne_twister_engine
-	std::uniform_int_distribution<int> dis(30, 50); // פיזור אחיד של מספרים בין 30 ל־50
+	std::uniform_int_distribution<int> dis(10, 20); // פיזור אחיד של מספרים בין 30 ל־50
 	m_numOfStick = dis(gen); // השמה של מספר רנדומלי ל־m_numOfStic
 }
 
@@ -45,13 +43,16 @@ const sf::RectangleShape Board::createRectangle(const int index) const
 
 void Board::findStick(const sf::Vector2f location)
 {
-	for (auto it = m_stick.begin(); it != m_stick.end(); ++it)
+	for (auto it = m_stick.rbegin(); it != m_stick.rend(); it++)
 	{
 		if ((*it)->isLocationInside(location))
 		{
-			std::cout << "yes";
-			m_stick.erase(it);		
+			m_stick.erase((it + 1).base());
 			break;
+		}
+		else
+		{
+			continue;
 		}
 	}
 	std::cout << "no";
@@ -69,8 +70,7 @@ void Board::createBoard()
 {
 	for (int row = 0; row < m_numOfStick; ++row)
 	{
-		auto temp = std::make_shared<Stick>(row, 5);
-		
+		auto temp = std::make_shared<Stick>(row, 6);
 		for (const auto& stick1 : m_stick)
 		{
 			if (Stick::isOverlaped(*temp.get(), *stick1.get()))
@@ -80,7 +80,6 @@ void Board::createBoard()
 			}
 		}
 		m_stick.push_back(temp);
-
 	}
 
 

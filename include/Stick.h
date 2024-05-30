@@ -10,7 +10,7 @@ class Stick
 public:
 	Stick(const int row, const int length);
     sf::RectangleShape& getrec();
-    const int getRow() const;
+    const int getIndex() const;
     const sf::Color getColor() const;
     const sf::Vector2f getLocation() const;
     void setColor(const Colors);
@@ -18,17 +18,15 @@ public:
 
     void addOverLapped(const std::shared_ptr<Stick>& overlap);
 
-    bool isLocationInside(const sf::Vector2f& location) const
-    {
-        return m_stick.getGlobalBounds().contains(location);
-    }
+    bool isLocationInside(const sf::Vector2f& location) const;
+ 
 
 
 
 private:
     std::vector<std::shared_ptr <Stick>> m_overlapped;
     sf::RectangleShape m_stick;
-    int m_row;
+    int m_index;
     sf::Vector2f m_location;
     sf::FloatRect m_bounds;
     void setBounds(float x, float y, float STICK_WIDTH, float length);
