@@ -5,11 +5,18 @@
 #include <random> 
 #include <iostream>
 
+struct Point
+{
+    int x;
+    int y;
+};
+
+
 class Stick
 {
 public:
 	Stick(const int row, const int length);
-    sf::RectangleShape& getrec();
+    sf::RectangleShape& getrec() const;
     const int getIndex() const;
     const sf::Color getColor() const;
     const sf::Vector2f getLocation() const;
@@ -17,7 +24,7 @@ public:
     static bool isOverlaped(const Stick& stick1, const Stick& stick2);
     void addOverLapped(const std::shared_ptr<Stick>& overlap);
     bool isLocationInside(const sf::Vector2f& location) const;
-    bool isEraseable ();
+    bool isEraseable() const;
 
 
 

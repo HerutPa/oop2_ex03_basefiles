@@ -1,13 +1,11 @@
 #pragma once
-
 #include "Stick.h"
 
-//אנחנו רוצים לייצר וקטור של הדוקים שכל אחד מהם ידע לחשב כלפי כל דוק שהודפס לפניו האם הוא נוגע בו מעליו.
-//2 יבדוק את 1 ואם הוא מעליו אז ל1 יירשם שיש משהו מעליו 
-//3 יבדוק את 2 ואז גם את 1 ויסמן לכל אחד מהם בהתאמה האם מספר 3 נמצא מעליו.
+
 Stick::Stick(const int row, const int length)
-	:  m_index(row)
+//	:  m_index(row)
 {
+	m_index = row;
 	std::random_device rd;                       // Obtain a random seed from the hardware
 	std::mt19937 generator(rd());                 // Initialize the random number generator
 
@@ -40,9 +38,9 @@ Stick::Stick(const int row, const int length)
 
 
 
-sf::RectangleShape& Stick::getrec()
+sf::RectangleShape& Stick::getrec() const
 {
-	return m_stick;
+	return const_cast<sf::RectangleShape&>(m_stick);
 }
 
 const int Stick::getIndex()const
@@ -67,8 +65,19 @@ void Stick::setColor(const Colors color)
 
 bool Stick::isOverlaped(const Stick& stick1, const Stick& stick2)
 {
-	return true;//algooritem
+	Point p1 = { stick1.getLocation().x, stick1.getLocation().y };
+	Point q1 = { stick1.getLocation().x + stick1.getrec().getSize().x, stick1.getLocation().y };
+	Point p2 = { stick1.getLocation().x, stick1.getLocation().y + stick1.getrec().getSize().y };
+	Point q2 = { stick1.getLocation().x + stick1.getrec().getSize().x, stick1.getLocation().y + stick1.getrec().getSize().y };
+
+	Point p3 = { stick2.getLocation().x, stick2.getLocation().y };
+	Point q3 = { stick2.getLocation().x + stick2.getrec().getSize().x, stick2.getLocation().y };
+	Point p4 = { stick2.getLocation().x, stick2.getLocation().y + stick2.getrec().getSize().y };
+	Point q4 = { stick2.getLocation().x + stick2.getrec().getSize().x, stick2.getLocation().y + stick2.getrec().getSize().y };
+
+	return doIntersect(p1, q1, p3, q3) || doIntersect(p1, q1, p4, q4) || doIntersect(p2, q2, p3, q3) || doIntersect(p2, q2, p4, q4);
 }
+
 
 void Stick::addOverLapped(const std::shared_ptr<Stick> &overlap)
 {
@@ -80,22 +89,18 @@ bool Stick::isLocationInside(const sf::Vector2f& location) const
 	return m_stick.getGlobalBounds().contains(location);
 }
 
-bool Stick::isEraseable()
+bool Stick::isEraseable() const
 {
+	for (const auto& overlappedStick : m_overlapped)
+	{
+		if (overlappedStick->getIndex() > this->getIndex())
+		{
+			return false;
+		}
+	}
 	return true;
 }
 
-//bool Stick::isEraseable(const std::shared_ptr<Stick>& currentStick)
-//{
-//	for (auto it = currentStick-> + 1; it != m_overlapped.rend(); ++it)
-//	{
-//		if (getIndex() > (*it)->getIndex())
-//		{
-//			return false;
-//		}
-//	}
-//	return true;
-//}
 
 	
 

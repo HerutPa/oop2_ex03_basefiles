@@ -13,7 +13,7 @@ Board::Board()
 	//locateObjects();
 	std::random_device rd; // מקור למספרים רנדומליים
 	std::mt19937 gen(rd()); // מחולל מספרים רנדומליים ממשפחת mersenne_twister_engine
-	std::uniform_int_distribution<int> dis(10, 20); // פיזור אחיד של מספרים בין 30 ל־50
+	std::uniform_int_distribution<int> dis(3, 5); // פיזור אחיד של מספרים בין 30 ל־50
 	m_numOfStick = dis(gen); // השמה של מספר רנדומלי ל־m_numOfStic
 }
 
@@ -43,19 +43,20 @@ const sf::RectangleShape Board::createRectangle(const int index) const
 
 void Board::findStick(const sf::Vector2f location)
 {
-	for (auto it = m_stick.rbegin(); it != m_stick.rend(); it++)
-	//for (const auto & stick: m_stick)	
+	for (auto it = m_stick.rbegin(); it != m_stick.rend(); ++it)
 	{
 		if ((*it)->isLocationInside(location))
 		{
-			if ((*it)->isEraseable())
+			auto regular_it = (it + 1).base();
+			if ((*regular_it)->isEraseable())
 			{
-				m_stick.erase((it + 1).base()); // המרת reverse_iterator לאיטרטור רגיל ואז מחיקת האיבר
+				m_stick.erase(regular_it);
 				break;
-			}	
+			}
 		}
 	}
 }
+
 
 void Board::createBoard()
 {
