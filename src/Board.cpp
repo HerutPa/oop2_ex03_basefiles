@@ -13,7 +13,7 @@ Board::Board()
 	//locateObjects();
 	std::random_device rd; // מקור למספרים רנדומליים
 	std::mt19937 gen(rd()); // מחולל מספרים רנדומליים ממשפחת mersenne_twister_engine
-	std::uniform_int_distribution<int> dis(3, 5); // פיזור אחיד של מספרים בין 30 ל־50
+	std::uniform_int_distribution<int> dis(10, 20); // פיזור אחיד של מספרים בין 30 ל־50
 	m_numOfStick = dis(gen); // השמה של מספר רנדומלי ל־m_numOfStic
 }
 
@@ -67,6 +67,8 @@ void Board::createBoard()
 		{
 			if (Stick::isOverlaped(*temp.get(), *stick1.get()))
 			{
+				//std::cout << "here ";
+
 				temp.get()->addOverLapped(stick1);
 				stick1.get()->addOverLapped(temp);
 			}

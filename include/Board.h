@@ -33,6 +33,6 @@ private:
 	void createBoard();
 	void createRectangles();
 	const sf::RectangleShape createRectangle(const int) const;
-
+	int counter = 0;
 
 };

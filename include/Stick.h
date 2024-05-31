@@ -4,6 +4,9 @@
 #include <Resources.h>
 #include <random> 
 #include <iostream>
+#include <memory>
+#include <vector>
+#include <algorithm> // For std::max and std::min
 
 struct Point
 {
@@ -39,9 +42,9 @@ private:
     
     void setColor(const Colors);
     static bool doIntersect(Point p1, Point q1, Point p2, Point q2);
-    bool onSegment(Point p, Point q, Point r);
-    int orientation(Point p, Point q, Point r);
+    static bool onSegment(Point p, Point q, Point r);
+    static int orientation(Point p, Point q, Point r);
 
-   
+    int count=0;
 
 };
