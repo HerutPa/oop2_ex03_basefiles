@@ -18,6 +18,7 @@ class GameControll
 public:
 	GameControll();
 	void run();
+	
 
 
 private:
@@ -39,11 +40,12 @@ private:
 	void startGame();
 	void UpdateData();
 	void init();
+	void drawToolBar();
 //	void computerTurn(Colors);
 //	void winLoop();
 //	void loseLoop();
 	void locateObjects();
 	sf::Clock m_GameClock;
 	sf::Clock m_MoveClock;
-	//ToolBar m_toolbar;
+	ToolBar m_toolbar;
 };

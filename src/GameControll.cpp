@@ -93,7 +93,6 @@ void GameControll::init()
 }
 
 
-
 void GameControll::startGame()
 {
     init();
@@ -104,8 +103,10 @@ void GameControll::startGame()
         m_board.drawBoard(this->m_window);
         m_window.draw(m_score[0]);
         m_window.draw(m_score[1]);
-        m_window.display();
+        drawToolBar();
         UpdateData();
+        m_window.display();
+        
 
         if (auto event = sf::Event{}; m_window.waitEvent(event))
         {
@@ -138,19 +139,27 @@ void GameControll::startGame()
         {
             m_window.close();
         }
+
     }
 }
+
+void GameControll::drawToolBar()
+{
+    for (int word = AVAILABLE; word <= TIME; word++)
+    {
+        m_window.draw(m_toolbar.getText(word));
+        m_window.draw(m_toolbar.getNum(word));
+    }
+}
+
 void GameControll::UpdateData()
 {
     ////update the toolbar data
-    //m_toolbar.setSticksAvailable(m_board.returnSticksAva());
-    //m_toolbar.SetScore(m_board.returnScore());
-    //m_toolbar.SetSticksLeft(m_board.returnSticksLeft());
-    //m_toolbar.SetSticksTake(m_board.returnSticksTake());
+    m_toolbar.setSticksAvailable(m_board.returnSticksAva());
+    m_toolbar.setSticksLeft(m_board.returnSticksLeft());
+    m_toolbar.setSticksTake(m_board.returnSticksTake());
     //m_toolbar.SetTime(m_GameClock.getElapsedTime().asSeconds() - m_board.getAddTime());
 }
-
-
 
 //void GameControll::locateObjects()
 //{

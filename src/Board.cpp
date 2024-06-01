@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "Board.h"
 #include <iostream>
@@ -9,12 +9,13 @@
 Board::Board()
 {
 	createRectangles();
-	//createGridFrame();
+	createGridFrame();
 	//locateObjects();
-	std::random_device rd; // î÷åø ìîñôøéí øğãåîìééí
-	std::mt19937 gen(rd()); // îçåìì îñôøéí øğãåîìééí îîùôçú mersenne_twister_engine
-	std::uniform_int_distribution<int> dis(10, 20); // ôéæåø àçéã ùì îñôøéí áéï 30 ìÎ50
-	m_numOfStick = dis(gen); // äùîä ùì îñôø øğãåîìé ìÎm_numOfStic
+	std::random_device rd; // Ã®Ã·Ã¥Ã¸ Ã¬Ã®Ã±Ã´Ã¸Ã©Ã­ Ã¸Ã°Ã£Ã¥Ã®Ã¬Ã©Ã©Ã­
+	std::mt19937 gen(rd()); // Ã®Ã§Ã¥Ã¬Ã¬ Ã®Ã±Ã´Ã¸Ã©Ã­ Ã¸Ã°Ã£Ã¥Ã®Ã¬Ã©Ã©Ã­ Ã®Ã®Ã¹Ã´Ã§Ãº mersenne_twister_engine
+	std::uniform_int_distribution<int> dis(10, 20); // Ã´Ã©Ã¦Ã¥Ã¸ Ã Ã§Ã©Ã£ Ã¹Ã¬ Ã®Ã±Ã´Ã¸Ã©Ã­ Ã¡Ã©Ã¯ 30 Ã¬Ã50
+	m_numOfStick = dis(gen); // Ã¤Ã¹Ã®Ã¤ Ã¹Ã¬ Ã®Ã±Ã´Ã¸ Ã¸Ã°Ã£Ã¥Ã®Ã¬Ã© Ã¬Ãm_numOfStic
+
 }
 
 void Board::createRectangles()
@@ -50,6 +51,7 @@ void Board::findStick(const sf::Vector2f location)
 			auto regular_it = (it + 1).base();
 			if ((*regular_it)->isEraseable())
 			{
+				m_sitckTakeCounter++;
 				m_stick.erase(regular_it);
 				break;
 			}
@@ -67,8 +69,6 @@ void Board::createBoard()
 		{
 			if (Stick::isOverlaped(*temp.get(), *stick1.get()))
 			{
-				//std::cout << "here ";
-
 				temp.get()->addOverLapped(stick1);
 				stick1.get()->addOverLapped(temp);
 			}
@@ -92,9 +92,7 @@ void Board::init()
 	//connectNeighbors();
 }
 
-
-
-//àéê ìöééø àú úçéìú äîùç÷ . ìôé îä ?
+//Ã Ã©Ãª Ã¬Ã¶Ã©Ã©Ã¸ Ã Ãº ÃºÃ§Ã©Ã¬Ãº Ã¤Ã®Ã¹Ã§Ã· . Ã¬Ã´Ã© Ã®Ã¤ ?
 void Board::drawBoard(sf::RenderWindow& window)
 {
 	//window.clear();
@@ -103,38 +101,55 @@ void Board::drawBoard(sf::RenderWindow& window)
 	{
 		window.draw(m_stick[stick]->getrec());
 	}
-	/*for (int rectangle = 0; rectangle < 4; rectangle++)
+	for (int rectangle = 0; rectangle < 4; rectangle++)
 	{
 		window.draw(m_grid_frame[rectangle]);
-	}*/
-	//for (int rectangle = 0; rectangle < m_rectangles.size(); rectangle++)
-	//{
-	//	window.draw(m_rectangles[rectangle]);
-	//}*/
+	}
 
 	//window.draw(m_back);
 }
 
-//void Board::createGridFrame()
-//{
-//	//up
-//	m_grid_frame[0].setSize(sf::Vector2f(GRID_WIDTH + RADIUS, 3 / 2 * RADIUS));
-//	m_grid_frame[0].setFillColor(WINDOW_COLOR);
-//	m_grid_frame[0].setPosition(sf::Vector2f((WINDOW_WIDTH / 2) - (GRID_WIDTH / 2) - RADIUS,
-//		(WINDOW_HEIGHT / 2) - (GRID_HEGHT / 2) - 2 * RADIUS + 2 * OUTLINE));
-//	//down
-//	m_grid_frame[1].setSize(sf::Vector2f(GRID_WIDTH + RADIUS, 3 / 2 * RADIUS));
-//	m_grid_frame[1].setFillColor(WINDOW_COLOR);
-//	m_grid_frame[1].setPosition(sf::Vector2f((WINDOW_WIDTH / 2) - (GRID_WIDTH / 2) - RADIUS,
-//		(WINDOW_HEIGHT / 2) + (GRID_HEGHT / 2) - 2 * RADIUS - 2 * OUTLINE));
-//	//right
-//	m_grid_frame[2].setSize(sf::Vector2f(2 * RADIUS, GRID_HEGHT + RADIUS - 4 * OUTLINE));
-//	m_grid_frame[2].setFillColor(WINDOW_COLOR);
-//	m_grid_frame[2].setPosition(sf::Vector2f((WINDOW_WIDTH / 2) + (GRID_WIDTH / 2) - RADIUS - (STICK_WIDTH / 2) + 3 * OUTLINE + RADIUS,
-//		(WINDOW_HEIGHT / 2) - (GRID_HEGHT / 2) - 2 * RADIUS + 2 * OUTLINE));
-//	//lrft
-//	m_grid_frame[3].setSize(sf::Vector2f(2 * RADIUS, GRID_HEGHT + RADIUS - 4 * OUTLINE));
-//	m_grid_frame[3].setFillColor(WINDOW_COLOR);
-//	m_grid_frame[3].setPosition(sf::Vector2f((WINDOW_WIDTH / 2) - (GRID_WIDTH / 2) - 2 * (RADIUS + 2 * OUTLINE) + STICK_WIDTH / 2 - 4 * OUTLINE,
-//		(WINDOW_HEIGHT / 2) - (GRID_HEGHT / 2) - 2 * RADIUS + 2 * OUTLINE));
-//}
+void Board::createGridFrame()
+{
+	// Define the thickness of the border
+	//const float borderThickness = 8.0f;
+
+	//// up
+	//m_grid_frame[0].setSize(sf::Vector2f(GRID_WIDTH , borderThickness));
+	//m_grid_frame[0].setFillColor(sf::Color::Black);
+	//m_grid_frame[0].setPosition(sf::Vector2f(((WINDOW_WIDTH / 2) - (GRID_WIDTH / 2) - RADIUS),
+	//	(WINDOW_HEIGHT / 2) - (GRID_HEGHT / 2) - RADIUS - borderThickness));
+
+	//// down
+	//m_grid_frame[1].setSize(sf::Vector2f(GRID_WIDTH, borderThickness));
+	//m_grid_frame[1].setFillColor(sf::Color::Black);
+	//m_grid_frame[1].setPosition(sf::Vector2f((WINDOW_WIDTH / 2) - (GRID_WIDTH / 2) - RADIUS,
+	//	(WINDOW_HEIGHT / 2) + (GRID_HEGHT / 2) - RADIUS));
+
+	//// right
+	//m_grid_frame[2].setSize(sf::Vector2f(borderThickness, GRID_HEGHT + RADIUS));
+	//m_grid_frame[2].setFillColor(sf::Color::Black);
+	//m_grid_frame[2].setPosition(sf::Vector2f((WINDOW_WIDTH / 2) + (GRID_WIDTH / 2) - RADIUS - borderThickness,
+	//	(WINDOW_HEIGHT / 2) - (GRID_HEGHT / 2) - RADIUS));
+
+	//// left
+	//m_grid_frame[3].setSize(sf::Vector2f(borderThickness, GRID_HEGHT + RADIUS));
+	//m_grid_frame[3].setFillColor(sf::Color::Black);
+	//m_grid_frame[3].setPosition(sf::Vector2f((WINDOW_WIDTH / 2) - (GRID_WIDTH / 2) - RADIUS,
+	//	(WINDOW_HEIGHT / 2) - (GRID_HEGHT / 2) - RADIUS));
+}
+
+int Board::returnSticksAva() const
+{
+	return m_numOfStick; 
+}
+
+int Board::returnSticksLeft()const
+{
+	return m_numOfStick - m_sitckTakeCounter;
+}
+
+int Board::returnSticksTake()const
+{
+	return m_sitckTakeCounter;
+}
