@@ -29,6 +29,30 @@ ToolBar::ToolBar()
 	}	
 }
 
+void ToolBar::init()
+{
+	//toolbar position
+	m_outline.setSize(sf::Vector2(100.f, 100.f));
+	m_outline.setPosition(0.f, 0.f);
+
+	//Style
+	m_outline.setOutlineColor(sf::Color::Color(0, 0, 0));
+	m_outline.setOutlineThickness(4.f);
+	m_outline.setFillColor(sf::Color::Color(255, 255, 255));
+
+	m_rec.setSize(sf::Vector2f(100.f, 100.f));
+	m_texture.loadFromFile("save.png");
+	m_rec.setTexture(&m_texture);
+	m_rec.setPosition(sf::Vector2f(0, 0));
+
+}
+
+void ToolBar::drawToolBar(sf::RenderWindow& m_window)
+{
+	m_window.draw(m_outline);
+	m_window.draw(m_rec);
+}
+
 sf::Text& ToolBar::getText(int word)
 {
 	return m_toolbar[word];
@@ -73,3 +97,4 @@ void ToolBar::setSticksTake(int take)
 	m_info_num[TAKE] = take;
 	m_Info[TAKE].setString(std::to_string(take));
 }
+

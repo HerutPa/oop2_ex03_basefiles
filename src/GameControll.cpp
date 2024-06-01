@@ -3,47 +3,49 @@
 
 GameControll::GameControll()
     :m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Pick Up Sticks"), m_game_over(false)
-{   
+{
     m_window.setFramerateLimit(60);
     m_YouWin.setTexture(Resources::instance().getTexture(YouWin));
     m_YouLose.setTexture(Resources::instance().getTexture(YouLose));
-   // locateObjects();
+    // locateObjects();
 }
 
 void GameControll::run()
 {
-    //m_GameClock.restart();
+    m_GameClock.restart();
 
     while (m_window.isOpen())
     {
         m_window.clear(sf::Color::Color(0, 0, 0));
         m_menu.drawMenu(this->m_window);
         m_window.display();
-       // auto delta_Time = m_MoveClock.restart();
+        float deltaTime = m_GameClock.restart().asSeconds();
+
+        // auto delta_Time = m_MoveClock.restart();
         if (auto event = sf::Event{}; m_window.waitEvent(event))
         {
             switch (event.type)
             {
-                case sf::Event::Closed:
-                {
-                    m_window.close();
-                    break;
-                }
-                case sf::Event::MouseButtonReleased:
-                {
-                    auto location = m_window.mapPixelToCoords(
-                        { event.mouseButton.x, event.mouseButton.y });
-                    handleMenuClick(location);
-                    break;
-                }
-                case sf::Event::MouseMoved:
-                {
-                    auto location = m_window.mapPixelToCoords(sf::Mouse::getPosition(m_window));
-                    handleMenuMouseMoved(location);
-                }
+            case sf::Event::Closed:
+            {
+                m_window.close();
+                break;
+            }
+            case sf::Event::MouseButtonReleased:
+            {
+                auto location = m_window.mapPixelToCoords(
+                    { event.mouseButton.x, event.mouseButton.y });
+                handleMenuClick(location);
+                break;
+            }
+            case sf::Event::MouseMoved:
+            {
+                auto location = m_window.mapPixelToCoords(sf::Mouse::getPosition(m_window));
+                handleMenuMouseMoved(location);
+            }
 
             }
-            
+
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         {
@@ -71,16 +73,18 @@ void GameControll::handleMenuClick(const sf::Vector2f location)
 {
     if (m_menu.getButton(Play).getGlobalBounds().contains(location))
     {
-        startGame();      
+        m_MoveClock.restart();
+        m_GameClock.restart();
+        startGame();
     }
-    //else if (m_menu.getButton(Continue).getGlobalBounds().contains(location))
-    //{
-    //    //startGame(); reload file 
-    //    ;
-    //}
+    else if (m_menu.getButton(Continue).getGlobalBounds().contains(location))
+    {
+        continueGame();
+
+    }
     if (m_menu.getButton(Exit).getGlobalBounds().contains(location))
     {
-        m_window.close();      
+        m_window.close();
     }
 }
 
@@ -90,7 +94,10 @@ void GameControll::init()
     int number = 0;
     m_score[Player].setString("Player:\n" + std::to_string(number) + "%");
     m_board.init();
+    m_toolBar.init();
+
 }
+
 
 
 void GameControll::startGame()
@@ -101,12 +108,15 @@ void GameControll::startGame()
     {
         m_window.clear(WINDOW_COLOR);
         m_board.drawBoard(this->m_window);
+        m_toolBar.drawToolBar(m_window);
+
         m_window.draw(m_score[0]);
         m_window.draw(m_score[1]);
-        drawToolBar();
         UpdateData();
+        drawToolBar();
         m_window.display();
-        
+
+
 
         if (auto event = sf::Event{}; m_window.waitEvent(event))
         {
@@ -114,9 +124,8 @@ void GameControll::startGame()
             {
             case sf::Event::MouseButtonReleased:
             {
-                auto location = m_window.mapPixelToCoords(
-                    { event.mouseButton.x, event.mouseButton.y });
-                m_board.findStick(location);
+                auto location = m_window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y });
+                handleClick(location);
                 break;
 
             }
@@ -135,12 +144,37 @@ void GameControll::startGame()
             }
         }
 
+        if (m_GameClock.getElapsedTime().asSeconds() > 5)
+        {
+            m_youLose.setTexture(Resources::instance().getTexture(YouLose));
+            m_youLose.scale(0.8f, 0.8f);
+            m_window.clear(sf::Color::Color(0, 102, 102));
+            m_window.draw(m_youLose);
+            m_window.display();
+            std::this_thread::sleep_for(std::chrono::seconds(5));
+            m_window.close();
+            break;
+        }
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         {
             m_window.close();
         }
-
     }
+}
+
+void GameControll::handleClick(const sf::Vector2f& location)
+{
+    if (m_toolBar.getGlobalBounds().contains(location))
+    {
+        m_board.createFile(m_ofile);
+        return;
+    }
+    else
+    {
+        m_board.findStick(location);
+    }
+
 }
 
 void GameControll::drawToolBar()
@@ -152,14 +186,23 @@ void GameControll::drawToolBar()
     }
 }
 
+void GameControll::continueGame()
+{
+
+}
+
+
 void GameControll::UpdateData()
 {
     ////update the toolbar data
+    //m_toolbar.SetScore(m_board.returnScore());
     m_toolbar.setSticksAvailable(m_board.returnSticksAva());
     m_toolbar.setSticksLeft(m_board.returnSticksLeft());
     m_toolbar.setSticksTake(m_board.returnSticksTake());
-    //m_toolbar.SetTime(m_GameClock.getElapsedTime().asSeconds() - m_board.getAddTime());
+    m_toolbar.setTime(m_GameClock.getElapsedTime().asSeconds());
 }
+
+
 
 //void GameControll::locateObjects()
 //{

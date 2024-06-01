@@ -9,11 +9,10 @@ class ToolBar
 {
 public:
 	ToolBar();
+	void init();
+	void drawToolBar(sf::RenderWindow& m_window);
 	sf::Text& getText(int);
 	sf::Text& getNum(int);
-	void setAvailable(const int);
-	void setLeft(const int);
-	void setTake(const int);
 	void setTime(const int);
 	void setTimeLeft(const int);
 	int getTime();
@@ -21,6 +20,8 @@ public:
 	void setSticksAvailable(int);
 	void setSticksLeft(int);
 	void setSticksTake(int);
+	sf::FloatRect getGlobalBounds()const { return m_outline.getGlobalBounds(); }
+
 
 private:
 	//members:
@@ -30,4 +31,8 @@ private:
 	int m_info_num[TOOL_BAR];
 	int m_sticksNum;
 	Board m_board;
+	sf::RectangleShape m_outline;
+	sf::RectangleShape m_rec;
+	sf::Texture m_texture;
+	char m_type = 'S';
 };

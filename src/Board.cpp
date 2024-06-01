@@ -26,6 +26,27 @@ void Board::createRectangles()
 	}
 }
 
+void Board::createFile(std::ofstream& m_ofile)
+{
+	m_ofile.open("Board.txt"); // פתיחת הקובץ לכתיבה
+
+	if (!m_ofile.is_open())
+	{
+		std::cout << "Error: Unable to open file for writing.\n";
+		return;
+	}
+
+	// כתיבת מידע על כל סטיק לקובץ
+	for (const auto& stick : m_stick)
+	{
+		m_ofile << stick->getLocation().x << stick->getLocation().y << "\n";
+		m_ofile << stick->getColor().r << stick->getColor().g << stick->getColor().b << "\n";
+		m_ofile << stick->getIndex() << "\n";
+	}
+
+	m_ofile.close(); // סגירת הקובץ
+}
+
 
 const sf::RectangleShape Board::createRectangle(const int index) const
 {

@@ -4,7 +4,8 @@
 #include <Resources.h>
 #include "Stick.h"
 #include <random>
-
+#include <iostream>
+#include <fstream>
 
 
 class Board
@@ -18,6 +19,8 @@ public:
 	int returnSticksAva() const;
 	int returnSticksLeft()const;
 	int returnSticksTake()const;
+	void createFile(std::ofstream& m_ofile);
+
 
 
 private:
