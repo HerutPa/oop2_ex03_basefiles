@@ -89,10 +89,8 @@ void Board::validateFile(const std::string & fileName, const std::string & expec
 			}
 		}
 	}
-
 	std::cout << "File validation successful." << std::endl;
 }
-
 
 
 const sf::RectangleShape Board::createRectangle(const int index) const
@@ -110,6 +108,7 @@ const sf::RectangleShape Board::createRectangle(const int index) const
 	return rec;
 }
 
+
 void Board::findStick(const sf::Vector2f location)
 {
 	for (auto it = m_stick.rbegin(); it != m_stick.rend(); ++it)
@@ -120,7 +119,7 @@ void Board::findStick(const sf::Vector2f location)
 			if ((*regular_it)->isEraseable())
 			{
 				m_sitckTakeCounter++;
-				(*regular_it)->deleteStick();
+				(*regular_it)->deleteOverLapped();
 				m_stick.erase(regular_it);
 				break;
 			}
@@ -128,15 +127,16 @@ void Board::findStick(const sf::Vector2f location)
 	}
 }
 
-void Board::fillAvailableStick()
-{
-	// Assuming the number of sticks is the size of m_sticks vector
-	int numOfSticks = static_cast<int>(m_stick.size());
-	for (auto& stick : m_stick)
-	{
-		stick->checkAvailableStick(m_stick, numOfSticks);
-	}
-}
+
+//void Board::fillAvailableStick()
+//{
+//	// Assuming the number of sticks is the size of m_sticks vector
+//	int numOfSticks = static_cast<int>(m_stick.size());
+//	for (auto& stick : m_stick)
+//	{
+//		stick->checkAvailableStick(m_stick, numOfSticks);
+//	}
+//}
 
 
 void Board::createBoard()
@@ -163,6 +163,7 @@ void Board::createBoard()
 	}*/
 }
 
+
 void Board::init()
 {
 	m_stick.clear();
@@ -170,6 +171,7 @@ void Board::init()
 	createBoard();
 	//connectNeighbors();
 }
+
 
 //àéê ìöééø àú úçéìú äîùç÷ . ìôé îä ?
 void Board::drawBoard(sf::RenderWindow& window)
@@ -187,6 +189,7 @@ void Board::drawBoard(sf::RenderWindow& window)
 
 	//window.draw(m_back);
 }
+
 
 void Board::createGridFrame()
 {

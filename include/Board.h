@@ -15,7 +15,7 @@ public:
 	void drawBoard(sf::RenderWindow&);
 	void init();
 	void findStick(const sf::Vector2f);
-	void fillAvailableStick();
+	//void fillAvailableStick();
 
 
 	int returnSticksAva() const;
@@ -34,6 +34,7 @@ private:
 	std::vector<std::shared_ptr <Stick>> m_stick;
 	sf::RectangleShape m_grid_frame[4];
 	std::vector<sf::RectangleShape> m_rectangles;
+	std::vector<std::shared_ptr <Stick>> m_available;
 	sf::Sprite m_backgroung;
     
 	////functions

@@ -109,7 +109,7 @@ void GameControll::startGame()
         m_toolBar.drawToolBar(m_window);
         int numOfSticks = m_board.returnSticksLeft();
        // m_stick.chackAvailableStick(numOfSticks);
-        m_board.fillAvailableStick();
+       // m_board.fillAvailableStick();
 
 
         m_window.draw(m_score[0]);

@@ -31,26 +31,11 @@ Stick::Stick(const int row, const int length)
     m_stick.setOutlineColor(sf::Color::Black);
     m_location.x = x;
     m_location.y = y;
-
-
-
+    
     m_points[0].x = x;
     m_points[0].y = y;
     m_points[1] = getEndPoint(m_points[0], length, randomNumAngel);
 }
-
-Stick::~Stick()
-{
-    for (const auto& overlappedStick : m_overlapped)
-    {
-        if (overlappedStick->m_overlapped.
-        {
-        }
-    }
-
-
-}
-
 
 
 Point Stick::getEndPoint(const Point& startP, int length, int degree) const
@@ -71,6 +56,17 @@ inline float dotProduct(const sf::Vector2f& vertex, const sf::Vector2f& axis)
     return vertex.x * axis.x + vertex.y * axis.y;
 }
 
+void Stick::deleteOverLapped()
+{
+    for (const auto& overlappedStick : m_overlapped)
+    {
+        int index = this->getIndex();
+        overlappedStick->m_overlapped.erase(std::remove_if(overlappedStick->m_overlapped.begin(), overlappedStick->m_overlapped.end(),
+            [index](const std::shared_ptr<Stick>& stick) { return stick->getIndex() == index; }),
+            overlappedStick->m_overlapped.end());
+    }
+
+}
 
 bool Stick::isOverlaped(const sf::RectangleShape& rec1, const sf::RectangleShape& rec2)
 {
@@ -120,70 +116,46 @@ bool Stick::isOverlaped(const sf::RectangleShape& rec1, const sf::RectangleShape
             return false; // Separating axis found
         }
     }
-
     return true; // No separating axis found
 }
 
 
-
-
-
-
-
-
-
-
-
-
-//bool Stick::isOverlaped(const Stick& stick1, const Stick& stick2)
+//void Stick::checkAvailableStick(const std::vector<std::shared_ptr<Stick>>& sticks, int numOfSticks)
 //{
-//    Point p1 = stick1.getPoint(0);
-//    Point q1 = stick1.getPoint(1);
-//
-//    Point p2 = stick2.getPoint(0);
-//    Point q2 = stick2.getPoint(1);
-//
-//    if (stick1.doIntersect(p1, q1, p2, q2))
-//        return true; 
-//
-//    return false; 
+//    m_available.clear();  // Clear the available sticks vector first
+//    for (int row = 0; row < numOfSticks; ++row)
+//    {
+//        for (const auto& stickCur : sticks)
+//        {
+//            if (stickCur->m_overlapped.empty())
+//            {
+//                m_available.push_back(stickCur);  // Add shared_ptr directly
+//            }
+//            else
+//            {
+//                int notAbove = 0;
+//                for (const auto& overlappedStick : stickCur->m_overlapped)
+//                {
+//                    if (getIndex() > overlappedStick->getIndex())
+//                    {
+//                        notAbove++;
+//                    }
+//                }
+//                if (notAbove == stickCur->m_overlapped.size())
+//                {
+//                    m_available.push_back(stickCur);  // Add shared_ptr directly
+//                }
+//            }
+//        }
+//    }
 //}
-
-void Stick::checkAvailableStick(const std::vector<std::shared_ptr<Stick>>& sticks, int numOfSticks)
-{
-    m_available.clear();  // Clear the available sticks vector first
-    for (int row = 0; row < numOfSticks; ++row)
-    {
-        for (const auto& stickCur : sticks)
-        {
-            if (stickCur->m_overlapped.empty())
-            {
-                m_available.push_back(stickCur);  // Add shared_ptr directly
-            }
-            else
-            {
-                int notAbove = 0;
-                for (const auto& overlappedStick : stickCur->m_overlapped)
-                {
-                    if (getIndex() > overlappedStick->getIndex())
-                    {
-                        notAbove++;
-                    }
-                }
-                if (notAbove == stickCur->m_overlapped.size())
-                {
-                    m_available.push_back(stickCur);  // Add shared_ptr directly
-                }
-            }
-        }
-    }
-}
 
 // min and max functions
 int Stick::min(int a, int b) const
 {
     return (a < b) ? a : b;
 }
+
 
 int Stick::max(int a, int b) const
 {
@@ -197,6 +169,7 @@ void Stick::addOverLapped(const std::shared_ptr<Stick>& overlap)
     std::cout << m_index << " ";
 }
 
+
 // Given three collinear points p, q, r, the function checks if 
 // pointq lies on line segment 'pr' 
 bool Stick::onSegment(Point p, Point q, Point r) const
@@ -208,8 +181,6 @@ bool Stick::onSegment(Point p, Point q, Point r) const
     return false;
 }
 
-
-
 // To find orientation of ordered triplet (p, q, r). 
 // The function returns following values 
 // 0 --> p, q and r are collinear 
@@ -219,17 +190,9 @@ int Stick::orientation(Point p, Point q, Point r) const
 {
     int val = (q.y - p.y) * (r.x - q.x) -
         (q.x - p.x) * (r.y - q.y);
-
-
-
     if (val == 0) return 0;  // collinear
-
-
-
     return (val > 0) ? 1 : 2; // clock or counterclock wise 
 }
-
-
 
 // The main function that returns true if line segment 'p1q1' 
 // and 'p2q2' intersect. 
@@ -256,16 +219,11 @@ bool Stick::doIntersect(Point p1, Point q1, Point p2, Point q2) const
     // p2, q2 and p1 are collinear and p1 lies on segment p2q2 
     if (o3 == 0 && onSegment(p2, p1, q2)) return true;
 
-
-
     // p2, q2 and q1 are collinear and q1 lies on segment p2q2 
     if (o4 == 0 && onSegment(p2, q1, q2)) return true;
 
-
-
     return false; // Doesn't fall in any of the above cases 
 }
-
 
 
 Point Stick::getPoint(int index) const
@@ -275,12 +233,8 @@ Point Stick::getPoint(int index) const
         std::cout << "bad index for Stick::getPoint()\n";
         exit(EXIT_FAILURE);
     }
-    //std::cout << m_points[index].x << "  "<< m_points[index].y << "  ";
     return { m_points[index].x , m_points[index].y };
 }
-
-
-
 
 
 sf::RectangleShape& Stick::getrec() const {
@@ -288,11 +242,9 @@ sf::RectangleShape& Stick::getrec() const {
 }
 
 
-
 const int Stick::getIndex() const {
     return m_index;
 }
-
 
 
 const sf::Color Stick::getColor() const {
@@ -300,11 +252,9 @@ const sf::Color Stick::getColor() const {
 }
 
 
-
 const sf::Vector2f Stick::getLocation() const {
     return m_location;
 }
-
 
 
 void Stick::setColor(const Colors color) {
@@ -312,12 +262,10 @@ void Stick::setColor(const Colors color) {
 }
 
 
-
 bool Stick::isLocationInside(const sf::Vector2f& location) const
 {
     return m_stick.getLocalBounds().contains(m_stick.getInverseTransform().transformPoint(location));
 }
-
 
 
 bool Stick::isEraseable() const

@@ -9,6 +9,10 @@
 #include <algorithm> // For std::max and std::min
 #include <cmath>
 #include <math.h>
+#include <complex>
+#include <numeric>
+#include <string_view>
+
 
 struct Point
 {
@@ -22,18 +26,15 @@ class Stick
 public:
     Stick();
     Stick(const int row, const int length);
-    ~Stick();
     
     sf::RectangleShape& getrec() const;
     const int getIndex() const;
     const sf::Color getColor() const;
     const sf::Vector2f getLocation() const;
-
-
+    void deleteOverLapped();
     static bool isOverlaped(const sf::RectangleShape& rec1, const sf::RectangleShape& rec2);
-
     //static bool isOverlaped(const Stick& stick1, const Stick& stick2);
-    void checkAvailableStick(const std::vector<std::shared_ptr<Stick>>& sticks, int numOfSticks);
+    //void checkAvailableStick(const std::vector<std::shared_ptr<Stick>>& sticks, int numOfSticks);
     void addOverLapped(const std::shared_ptr<Stick>& overlap);
     int getOverLappedSize();
     bool isLocationInside(const sf::Vector2f& location) const;
@@ -42,7 +43,6 @@ public:
 
 private:
     std::vector<std::shared_ptr <Stick>> m_overlapped;
-    std::vector<std::shared_ptr <Stick>> m_available;
 
     sf::RectangleShape m_stick;
     int m_index;
