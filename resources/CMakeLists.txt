@@ -11,3 +11,5 @@ configure_file ("GameBackground.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("YouWin.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("YouLose.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("save.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("hint.png" ${CMAKE_BINARY_DIR} COPYONLY)
+

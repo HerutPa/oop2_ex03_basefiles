@@ -6,8 +6,7 @@ GameControll::GameControll()
 {
     m_window.setFramerateLimit(60);
     m_YouWin.setTexture(Resources::instance().getTexture(YouWin));
-    m_YouLose.setTexture(Resources::instance().getTexture(YouLose));
-    // locateObjects();
+    m_YouLose.setTexture(Resources::instance().getTexture(YouLose));    // locateObjects();
 }
 
 void GameControll::run()
@@ -99,7 +98,6 @@ void GameControll::init()
 }
 
 
-
 void GameControll::startGame()
 {
     init();
@@ -109,6 +107,8 @@ void GameControll::startGame()
         m_window.clear(WINDOW_COLOR);
         m_board.drawBoard(this->m_window);
         m_toolBar.drawToolBar(m_window);
+        int numOfSticks = m_board.returnSticksLeft();
+        m_stick.chackAvailableStick(numOfSticks);
 
         m_window.draw(m_score[0]);
         m_window.draw(m_score[1]);
@@ -144,7 +144,7 @@ void GameControll::startGame()
             }
         }
 
-        if (m_GameClock.getElapsedTime().asSeconds() > 5)
+        if (m_GameClock.getElapsedTime().asSeconds() > 40)
         {
             m_youLose.setTexture(Resources::instance().getTexture(YouLose));
             m_youLose.scale(0.8f, 0.8f);
@@ -167,8 +167,25 @@ void GameControll::handleClick(const sf::Vector2f& location)
 {
     if (m_toolBar.getGlobalBounds().contains(location))
     {
-        m_board.createFile(m_ofile);
-        return;
+        if (m_toolBar.isButtonPrasedSave(location))
+        {
+            m_board.createFile(m_ofile);
+            return;
+        }
+        else if (m_toolBar.isButtonPrasedHint(location))
+        {
+            ; ///////////////////////////////
+
+
+
+
+
+
+
+
+
+
+        }
     }
     else
     {

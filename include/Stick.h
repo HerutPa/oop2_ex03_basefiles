@@ -20,6 +20,7 @@ struct Point
 class Stick
 {
 public:
+    Stick();
     Stick(const int row, const int length);
     sf::RectangleShape& getrec() const;
     const int getIndex() const;
@@ -27,12 +28,15 @@ public:
     const sf::Vector2f getLocation() const;
 
     static bool isOverlaped(const Stick& stick1, const Stick& stick2);
+    void chackAvailableStick(int);
     void addOverLapped(const std::shared_ptr<Stick>& overlap);
+    int getOverLappedSize();
     bool isLocationInside(const sf::Vector2f& location) const;
     bool isEraseable() const;
 
 private:
     std::vector<std::shared_ptr <Stick>> m_overlapped;
+    std::vector<std::unique_ptr <Stick>> m_available; 
 
     sf::RectangleShape m_stick;
     int m_index;

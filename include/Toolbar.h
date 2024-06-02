@@ -11,6 +11,8 @@ public:
 	ToolBar();
 	void init();
 	void drawToolBar(sf::RenderWindow& m_window);
+	bool isButtonPrasedSave(sf::Vector2f location);
+	bool isButtonPrasedHint(sf::Vector2f location);
 	sf::Text& getText(int);
 	sf::Text& getNum(int);
 	void setTime(const int);
@@ -32,7 +34,9 @@ private:
 	int m_sticksNum;
 	Board m_board;
 	sf::RectangleShape m_outline;
-	sf::RectangleShape m_rec;
-	sf::Texture m_texture;
+	sf::RectangleShape m_recHint;
+	sf::RectangleShape m_recSave;
+	sf::Texture m_textureS;
+	sf::Texture m_textureH;
 	char m_type = 'S';
 };

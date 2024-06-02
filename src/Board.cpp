@@ -28,24 +28,71 @@ void Board::createRectangles()
 
 void Board::createFile(std::ofstream& m_ofile)
 {
-	m_ofile.open("Board.txt"); // פתיחת הקובץ לכתיבה
+	//m_ofile.open("Board.txt"); // פתיחת הקובץ לכתיבה
 
-	if (!m_ofile.is_open())
+	//if (!m_ofile.is_open())
+	//{
+	//	std::cout << "Error: Unable to open file for writing.\n";
+	//	return;
+	//}
+
+	try
 	{
-		std::cout << "Error: Unable to open file for writing.\n";
-		return;
+		std::string inputFileName = "Board.txt";
+		std::string expectedExtension = ".txt";
+		validateFile(inputFileName, expectedExtension);
+
+		std::ofstream m_ofile;
+		m_ofile.open("Board.txt"); // פתיחת הקובץ לכתיבה
+
+		if (!m_ofile.is_open()) 
+		{
+			std::cout << "Error: Unable to open file for writing.\n";
+		}
+		// כתיבת מידע על כל סטיק לקובץ
+		for (const auto& stick : m_stick)
+		{
+			m_ofile << stick->getLocation().x << stick->getLocation().y << "\n";
+			m_ofile << stick->getColor().r << stick->getColor().g << stick->getColor().b << "\n";
+			m_ofile << stick->getIndex() << "\n";
+		}
+
+		m_ofile.close(); // סגירת הקובץ
 	}
 
-	// כתיבת מידע על כל סטיק לקובץ
-	for (const auto& stick : m_stick)
+	catch (const std::exception& e)
 	{
-		m_ofile << stick->getLocation().x << stick->getLocation().y << "\n";
-		m_ofile << stick->getColor().r << stick->getColor().g << stick->getColor().b << "\n";
-		m_ofile << stick->getIndex() << "\n";
+		std::cerr << "File validation error: " << e.what() << std::endl;
 	}
-
-	m_ofile.close(); // סגירת הקובץ
 }
+
+
+void Board::validateFile(const std::string & fileName, const std::string & expectedExtension) 
+{
+	// Check if file exists
+	std::ifstream file(fileName);
+	if (!file.is_open()) {
+		throw std::runtime_error("File not found: " + fileName);
+	}
+
+	// Check file extension
+	if (fileName.substr(fileName.find_last_of('.')) != expectedExtension) {
+		throw std::runtime_error("File extension mismatch: expected " + expectedExtension);
+	}
+
+	// Read and validate file content
+	std::string line;
+	while (std::getline(file, line)) {
+		for (char c : line) {
+			if (!std::isdigit(c) && !std::isspace(c)) {
+				throw std::runtime_error("Invalid content in file: non-digit character found: " + line);
+			}
+		}
+	}
+
+	std::cout << "File validation successful." << std::endl;
+}
+
 
 
 const sf::RectangleShape Board::createRectangle(const int index) const

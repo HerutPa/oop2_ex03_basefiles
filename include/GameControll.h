@@ -29,6 +29,7 @@ private:
 	Menu m_menu;
 	Board m_board;
 	ToolBar m_toolBar;
+	Stick m_stick; 
 
 	bool m_game_over;
 //	std::unique_ptr<Algorithm> m_algorithm;

@@ -4,7 +4,9 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-
+Stick::Stick()
+{
+} 
 
 Stick::Stick(const int row, const int length)
 {
@@ -58,13 +60,9 @@ Point Stick::getEndPoint(const Point& startP, int length, int degree) const
     // convert angle from degrees to radians
     double angleRad = degree * M_PI / 180.0;
 
-
-
     // calculate coordinates
     double new_x = startP.x + length * cos(angleRad);
     double new_y = startP.y + length * sin(angleRad);
-
-
 
     return { static_cast<int>(new_x), static_cast<int>(new_y) };
 }
@@ -76,17 +74,44 @@ bool Stick::isOverlaped(const Stick& stick1, const Stick& stick2)
     Point p1 = stick1.getPoint(0);
     Point q1 = stick1.getPoint(1);
 
-
-
     Point p2 = stick2.getPoint(0);
     Point q2 = stick2.getPoint(1);
 
+    if (stick1.doIntersect(p1, q1, p2, q2))
+        return true; 
 
-
-    return stick1.doIntersect(p1, q1, p2, q2);
+    return false; 
 }
 
-
+void Stick::chackAvailableStick(int numOfSticks)
+{
+    for (int row = 0; row < numOfSticks; ++row)
+    {
+        for (const auto& stickCur : )
+        {
+            if (stickCur->m_overlapped.empty())
+            {
+                m_available.push_back(stickCur);
+            }
+            else
+            {
+                int notAbove = 0; 
+                for (int index = 0; index < m_overlapped.size(); ++index)
+                {
+                    if (getIndex() > stickCur->m_overlapped.getIndex())
+                    {
+                        notAbove++; 
+                    }
+                }
+                if (notAbove == m_overlapped.size())
+                {
+                    m_available.push_back(stickCur);
+                }
+            }
+        }
+        
+    }
+}
 
 // min and max functions
 int Stick::min(int a, int b) const
@@ -94,31 +119,25 @@ int Stick::min(int a, int b) const
     return (a < b) ? a : b;
 }
 
-
-
 int Stick::max(int a, int b) const
 {
     return (a > b) ? a : b;
 }
+
+
 void Stick::addOverLapped(const std::shared_ptr<Stick>& overlap)
 {
     m_overlapped.push_back(overlap);
     std::cout << m_index << " ";
 }
 
-
-
-
-
 // Given three collinear points p, q, r, the function checks if 
-// point q lies on line segment 'pr' 
+// pointq lies on line segment 'pr' 
 bool Stick::onSegment(Point p, Point q, Point r) const
 {
     if (q.x <= max(p.x, r.x) && q.x >= min(p.x, r.x) &&
         q.y <= max(p.y, r.y) && q.y >= min(p.y, r.y))
         return true;
-
-
 
     return false;
 }
@@ -157,24 +176,16 @@ bool Stick::doIntersect(Point p1, Point q1, Point p2, Point q2) const
     int o3 = orientation(p2, q2, p1);
     int o4 = orientation(p2, q2, q1);
 
-
-
     // General case 
     if (o1 != o2 && o3 != o4)
         return true;
-
-
 
     // Special Cases 
     // p1, q1 and p2 are collinear and p2 lies on segment p1q1 
     if (o1 == 0 && onSegment(p1, p2, q1)) return true;
 
-
-
     // p1, q1 and q2 are collinear and q2 lies on segment p1q1 
     if (o2 == 0 && onSegment(p1, q2, q1)) return true;
-
-
 
     // p2, q2 and p1 are collinear and p1 lies on segment p2q2 
     if (o3 == 0 && onSegment(p2, p1, q2)) return true;

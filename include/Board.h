@@ -25,7 +25,6 @@ public:
 
 private:
 	//Stick m_stickClass;
-
 	int m_row;
 	int m_col;
 	int m_numOfStick;
@@ -39,6 +38,7 @@ private:
 	void createBoard();
 	void createGridFrame();
 	void createRectangles();
+	void validateFile(const std::string& fileName, const std::string& expectedExtension);
 	const sf::RectangleShape createRectangle(const int) const;
 	int counter = 0;
 
