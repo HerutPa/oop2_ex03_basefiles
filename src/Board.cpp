@@ -120,6 +120,7 @@ void Board::findStick(const sf::Vector2f location)
 			if ((*regular_it)->isEraseable())
 			{
 				m_sitckTakeCounter++;
+				(*regular_it)->deleteStick();
 				m_stick.erase(regular_it);
 				break;
 			}

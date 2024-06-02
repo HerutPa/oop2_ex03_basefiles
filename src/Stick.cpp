@@ -39,6 +39,18 @@ Stick::Stick(const int row, const int length)
     m_points[1] = getEndPoint(m_points[0], length, randomNumAngel);
 }
 
+Stick::~Stick()
+{
+    for (const auto& overlappedStick : m_overlapped)
+    {
+        if (overlappedStick->m_overlapped.
+        {
+        }
+    }
+
+
+}
+
 
 
 Point Stick::getEndPoint(const Point& startP, int length, int degree) const
@@ -52,7 +64,6 @@ Point Stick::getEndPoint(const Point& startP, int length, int degree) const
 
     return { static_cast<int>(new_x), static_cast<int>(new_y) };
 }
-
 
 
 inline float dotProduct(const sf::Vector2f& vertex, const sf::Vector2f& axis)

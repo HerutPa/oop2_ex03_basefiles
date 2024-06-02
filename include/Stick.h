@@ -22,10 +22,13 @@ class Stick
 public:
     Stick();
     Stick(const int row, const int length);
+    ~Stick();
+    
     sf::RectangleShape& getrec() const;
     const int getIndex() const;
     const sf::Color getColor() const;
     const sf::Vector2f getLocation() const;
+
 
     static bool isOverlaped(const sf::RectangleShape& rec1, const sf::RectangleShape& rec2);
 
