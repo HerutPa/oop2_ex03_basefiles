@@ -15,6 +15,8 @@ public:
 	void drawBoard(sf::RenderWindow&);
 	void init();
 	void findStick(const sf::Vector2f);
+	void fillAvailableStick();
+
 
 	int returnSticksAva() const;
 	int returnSticksLeft()const;

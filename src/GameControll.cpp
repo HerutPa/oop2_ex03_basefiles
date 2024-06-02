@@ -108,7 +108,9 @@ void GameControll::startGame()
         m_board.drawBoard(this->m_window);
         m_toolBar.drawToolBar(m_window);
         int numOfSticks = m_board.returnSticksLeft();
-        m_stick.chackAvailableStick(numOfSticks);
+       // m_stick.chackAvailableStick(numOfSticks);
+        m_board.fillAvailableStick();
+
 
         m_window.draw(m_score[0]);
         m_window.draw(m_score[1]);
@@ -117,8 +119,12 @@ void GameControll::startGame()
         m_window.display();
 
 
+        //auto event = sf::Event{};
+        //while (window->pollEvent(event))
+        //{
 
-        if (auto event = sf::Event{}; m_window.waitEvent(event))
+        auto event = sf::Event{};
+        while ( m_window.pollEvent(event))
         {
             switch (event.type)
             {
@@ -174,16 +180,7 @@ void GameControll::handleClick(const sf::Vector2f& location)
         }
         else if (m_toolBar.isButtonPrasedHint(location))
         {
-            ; ///////////////////////////////
-
-
-
-
-
-
-
-
-
+            ; 
 
         }
     }

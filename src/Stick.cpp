@@ -13,28 +13,14 @@ Stick::Stick(const int row, const int length)
     m_index = row;
     std::random_device rd;
     std::mt19937 generator(rd());
-
-
-
-    std::uniform_real_distribution<float> distribution_x(0.f, 90.f);
-    std::uniform_real_distribution<float> distribution_y(0.f, 9.f);
-
-
-
-    float x = 300 + distribution_x(generator) * STICK_WIDTH;
-    float y = 100 + distribution_y(generator) * STICK_LENGTH;
-
-
-
+    std::uniform_int_distribution<int> distribution_x(0.f, 90.f);
+    std::uniform_int_distribution<int> distribution_y(0.f, 9.f);
+    int x = 300 + distribution_x(generator) * STICK_WIDTH;
+    int y = 100 + distribution_y(generator) * STICK_LENGTH;
     std::uniform_int_distribution<int> distribution2(0, 5);
     int randomNumColor = distribution2(generator);
-
-
-
-    std::uniform_real_distribution<float> distribution3(10.f, 355.f);
-    float randomNumAngel = distribution3(generator);
-
-
+    std::uniform_int_distribution<int> distribution3(10.f, 355.f);
+    int randomNumAngel = distribution3(generator);
 
     m_stick.setSize(sf::Vector2f(length, 150));
     m_stick.setOrigin(25, 25);
@@ -69,47 +55,116 @@ Point Stick::getEndPoint(const Point& startP, int length, int degree) const
 
 
 
-bool Stick::isOverlaped(const Stick& stick1, const Stick& stick2)
+inline float dotProduct(const sf::Vector2f& vertex, const sf::Vector2f& axis)
 {
-    Point p1 = stick1.getPoint(0);
-    Point q1 = stick1.getPoint(1);
-
-    Point p2 = stick2.getPoint(0);
-    Point q2 = stick2.getPoint(1);
-
-    if (stick1.doIntersect(p1, q1, p2, q2))
-        return true; 
-
-    return false; 
+    return vertex.x * axis.x + vertex.y * axis.y;
 }
 
-void Stick::chackAvailableStick(int numOfSticks)
+
+bool Stick::isOverlaped(const sf::RectangleShape& rec1, const sf::RectangleShape& rec2)
 {
+    auto getVertices = [](const sf::RectangleShape& rec)
+        {
+        sf::Transform transform = rec.getTransform();
+        sf::FloatRect rect = rec.getLocalBounds();
+        return std::vector<sf::Vector2f>
+        {
+            transform.transformPoint(sf::Vector2f(rect.left, rect.top)),
+                transform.transformPoint(sf::Vector2f(rect.left + rect.width, rect.top)),
+                transform.transformPoint(sf::Vector2f(rect.left + rect.width, rect.top + rect.height)),
+                transform.transformPoint(sf::Vector2f(rect.left, rect.top + rect.height))
+        };
+        };
+
+    std::vector<sf::Vector2f> vertices1 = getVertices(rec1);
+    std::vector<sf::Vector2f> vertices2 = getVertices(rec2);
+
+    std::vector<sf::Vector2f> axes{
+        vertices1[1] - vertices1[0], vertices1[2] - vertices1[1],
+        vertices2[1] - vertices2[0], vertices2[2] - vertices2[1]
+    };
+
+    for (const auto& axis : axes)
+    {
+        float minProjection1 = std::numeric_limits<float>::max();
+        float maxProjection1 = std::numeric_limits<float>::lowest();
+        for (const auto& vertex : vertices1)
+        {
+            float projection = dotProduct(vertex, axis);
+            minProjection1 = std::min(minProjection1, projection);
+            maxProjection1 = std::max(maxProjection1, projection);
+        }
+
+        float minProjection2 = std::numeric_limits<float>::max();
+        float maxProjection2 = std::numeric_limits<float>::lowest();
+        for (const auto& vertex : vertices2)
+        {
+            float projection = dotProduct(vertex, axis);
+            minProjection2 = std::min(minProjection2, projection);
+            maxProjection2 = std::max(maxProjection2, projection);
+        }
+
+        if (maxProjection1 < minProjection2 || maxProjection2 < minProjection1)
+        {
+            return false; // Separating axis found
+        }
+    }
+
+    return true; // No separating axis found
+}
+
+
+
+
+
+
+
+
+
+
+
+
+//bool Stick::isOverlaped(const Stick& stick1, const Stick& stick2)
+//{
+//    Point p1 = stick1.getPoint(0);
+//    Point q1 = stick1.getPoint(1);
+//
+//    Point p2 = stick2.getPoint(0);
+//    Point q2 = stick2.getPoint(1);
+//
+//    if (stick1.doIntersect(p1, q1, p2, q2))
+//        return true; 
+//
+//    return false; 
+//}
+
+void Stick::checkAvailableStick(const std::vector<std::shared_ptr<Stick>>& sticks, int numOfSticks)
+{
+    m_available.clear();  // Clear the available sticks vector first
     for (int row = 0; row < numOfSticks; ++row)
     {
-        for (const auto& stickCur : )
+        for (const auto& stickCur : sticks)
         {
             if (stickCur->m_overlapped.empty())
             {
-                m_available.push_back(stickCur);
+                m_available.push_back(stickCur);  // Add shared_ptr directly
             }
             else
             {
-                int notAbove = 0; 
-                for (int index = 0; index < m_overlapped.size(); ++index)
+                int notAbove = 0;
+                for (const auto& overlappedStick : stickCur->m_overlapped)
                 {
-                    if (getIndex() > stickCur->m_overlapped.getIndex())
+                    if (getIndex() > overlappedStick->getIndex())
                     {
-                        notAbove++; 
+                        notAbove++;
                     }
                 }
-                if (notAbove == m_overlapped.size())
+                if (notAbove == stickCur->m_overlapped.size())
                 {
-                    m_available.push_back(stickCur);
+                    m_available.push_back(stickCur);  // Add shared_ptr directly
                 }
             }
         }
-        
     }
 }
 
@@ -209,9 +264,6 @@ Point Stick::getPoint(int index) const
         std::cout << "bad index for Stick::getPoint()\n";
         exit(EXIT_FAILURE);
     }
-
-
-
     //std::cout << m_points[index].x << "  "<< m_points[index].y << "  ";
     return { m_points[index].x , m_points[index].y };
 }

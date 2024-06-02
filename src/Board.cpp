@@ -13,7 +13,7 @@ Board::Board()
 	//locateObjects();
 	std::random_device rd; // î÷åø ìîñôøéí øðãåîìééí
 	std::mt19937 gen(rd()); // îçåìì îñôøéí øðãåîìééí îîùôçú mersenne_twister_engine
-	std::uniform_int_distribution<int> dis(10, 20); // ôéæåø àçéã ùì îñôøéí áéï 30 ìÎ50
+	std::uniform_int_distribution<int> dis(20, 30); // ôéæåø àçéã ùì îñôøéí áéï 30 ìÎ50
 	m_numOfStick = dis(gen); // äùîä ùì îñôø øðãåîìé ìÎm_numOfStic
 
 }
@@ -127,6 +127,16 @@ void Board::findStick(const sf::Vector2f location)
 	}
 }
 
+void Board::fillAvailableStick()
+{
+	// Assuming the number of sticks is the size of m_sticks vector
+	int numOfSticks = static_cast<int>(m_stick.size());
+	for (auto& stick : m_stick)
+	{
+		stick->checkAvailableStick(m_stick, numOfSticks);
+	}
+}
+
 
 void Board::createBoard()
 {
@@ -135,7 +145,7 @@ void Board::createBoard()
 		auto temp = std::make_shared<Stick>(row, 6);
 		for (const auto& stick1 : m_stick)
 		{
-			if (Stick::isOverlaped(*temp.get(), *stick1.get()))
+			if (Stick::isOverlaped(temp->getrec(), stick1->getrec()))
 			{
 				temp.get()->addOverLapped(stick1);
 				stick1.get()->addOverLapped(temp);
