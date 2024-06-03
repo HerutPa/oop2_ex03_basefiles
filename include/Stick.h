@@ -34,11 +34,12 @@ public:
     void deleteOverLapped();
     static bool isOverlaped(const sf::RectangleShape& rec1, const sf::RectangleShape& rec2);
     //static bool isOverlaped(const Stick& stick1, const Stick& stick2);
-    //void checkAvailableStick(const std::vector<std::shared_ptr<Stick>>& sticks, int numOfSticks);
     void addOverLapped(const std::shared_ptr<Stick>& overlap);
     int getOverLappedSize();
     bool isLocationInside(const sf::Vector2f& location) const;
     bool isEraseable() const;
+    bool checkAvailableStick() const;
+
 
 
 private:

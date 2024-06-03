@@ -107,9 +107,8 @@ void GameControll::startGame()
         m_window.clear(WINDOW_COLOR);
         m_board.drawBoard(this->m_window);
         m_toolBar.drawToolBar(m_window);
-        int numOfSticks = m_board.returnSticksLeft();
-       // m_stick.chackAvailableStick(numOfSticks);
-       // m_board.fillAvailableStick();
+        //int numOfSticks = m_board.returnSticksLeft();
+        m_board.fillAvailableStick();
 
 
         m_window.draw(m_score[0]);
@@ -180,8 +179,7 @@ void GameControll::handleClick(const sf::Vector2f& location)
         }
         else if (m_toolBar.isButtonPrasedHint(location))
         {
-            ; 
-
+            //m_board.hintPreesed();
         }
     }
     else

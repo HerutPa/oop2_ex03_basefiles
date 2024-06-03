@@ -120,35 +120,53 @@ bool Stick::isOverlaped(const sf::RectangleShape& rec1, const sf::RectangleShape
 }
 
 
-//void Stick::checkAvailableStick(const std::vector<std::shared_ptr<Stick>>& sticks, int numOfSticks)
+//Available sticks vector update
+bool Stick::checkAvailableStick() const
+{
+    if (this->m_overlapped.empty())
+    {
+        return true;
+    }
+    else
+    {
+        for (const auto& stickCur : m_overlapped)
+        {
+            int notAbove = 0;
+            for (const auto& overlappedStick : stickCur->m_overlapped)
+            {
+                int this_index = getIndex();
+                int ovlap = overlappedStick->getIndex(); 
+                if (getIndex() > overlappedStick->getIndex())
+                {
+                    notAbove++;
+                }
+            }
+            if (notAbove == stickCur->m_overlapped.size())
+            {
+                return true;
+            }
+        }
+    }
+    return false; 
+}
+
+
+//void Stick::hintColorsChange()
 //{
-//    m_available.clear();  // Clear the available sticks vector first
-//    for (int row = 0; row < numOfSticks; ++row)
-//    {
-//        for (const auto& stickCur : sticks)
-//        {
-//            if (stickCur->m_overlapped.empty())
-//            {
-//                m_available.push_back(stickCur);  // Add shared_ptr directly
-//            }
-//            else
-//            {
-//                int notAbove = 0;
-//                for (const auto& overlappedStick : stickCur->m_overlapped)
-//                {
-//                    if (getIndex() > overlappedStick->getIndex())
-//                    {
-//                        notAbove++;
-//                    }
-//                }
-//                if (notAbove == stickCur->m_overlapped.size())
-//                {
-//                    m_available.push_back(stickCur);  // Add shared_ptr directly
-//                }
-//            }
-//        }
-//    }
+//
 //}
+
+bool Stick::isEraseable() const
+{
+    for (const auto& overlappedStick : m_overlapped)
+    {
+        if (overlappedStick->getIndex() > this->getIndex())
+        {
+            return false;
+        }
+    }
+    return true;
+}
 
 // min and max functions
 int Stick::min(int a, int b) const
@@ -268,15 +286,5 @@ bool Stick::isLocationInside(const sf::Vector2f& location) const
 }
 
 
-bool Stick::isEraseable() const
-{
-    for (const auto& overlappedStick : m_overlapped)
-    {
-        if (overlappedStick->getIndex() > this->getIndex())
-        {
-            return false;
-        }
-    }
-    return true;
-}
+
 

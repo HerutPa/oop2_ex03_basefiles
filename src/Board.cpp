@@ -13,7 +13,7 @@ Board::Board()
 	//locateObjects();
 	std::random_device rd; // î÷åø ìîñôøéí øðãåîìééí
 	std::mt19937 gen(rd()); // îçåìì îñôøéí øðãåîìééí îîùôçú mersenne_twister_engine
-	std::uniform_int_distribution<int> dis(20, 30); // ôéæåø àçéã ùì îñôøéí áéï 30 ìÎ50
+	std::uniform_int_distribution<int> dis(5, 10); // ôéæåø àçéã ùì îñôøéí áéï 30 ìÎ50
 	m_numOfStick = dis(gen); // äùîä ùì îñôø øðãåîìé ìÎm_numOfStic
 
 }
@@ -56,7 +56,6 @@ void Board::createFile(std::ofstream& m_ofile)
 			m_ofile << stick->getColor().r << stick->getColor().g << stick->getColor().b << "\n";
 			m_ofile << stick->getIndex() << "\n";
 		}
-
 		m_ofile.close(); // סגירת הקובץ
 	}
 
@@ -71,20 +70,25 @@ void Board::validateFile(const std::string & fileName, const std::string & expec
 {
 	// Check if file exists
 	std::ifstream file(fileName);
-	if (!file.is_open()) {
+	if (!file.is_open()) 
+	{
 		throw std::runtime_error("File not found: " + fileName);
 	}
 
 	// Check file extension
-	if (fileName.substr(fileName.find_last_of('.')) != expectedExtension) {
+	if (fileName.substr(fileName.find_last_of('.')) != expectedExtension) 
+	{
 		throw std::runtime_error("File extension mismatch: expected " + expectedExtension);
 	}
 
 	// Read and validate file content
 	std::string line;
-	while (std::getline(file, line)) {
-		for (char c : line) {
-			if (!std::isdigit(c) && !std::isspace(c)) {
+	while (std::getline(file, line)) 
+	{
+		for (char c : line) 
+		{
+			if (!std::isdigit(c) && !std::isspace(c)) 
+			{
 				throw std::runtime_error("Invalid content in file: non-digit character found: " + line);
 			}
 		}
@@ -116,6 +120,7 @@ void Board::findStick(const sf::Vector2f location)
 		if ((*it)->isLocationInside(location))
 		{
 			auto regular_it = (it + 1).base();
+			//chack if we can erase the stick from the board
 			if ((*regular_it)->isEraseable())
 			{
 				m_sitckTakeCounter++;
@@ -128,13 +133,33 @@ void Board::findStick(const sf::Vector2f location)
 }
 
 
-//void Board::fillAvailableStick()
+void Board::fillAvailableStick()
+{
+	m_available.clear();  // Clear the available sticks vector first
+	for (auto it = m_stick.begin(); it != m_stick.end(); ++it)
+	{
+		if ((*it)->checkAvailableStick())
+		{
+			m_available.push_back(*it);
+		}
+	}
+	m_sitckAvailableCounter = m_available.size();
+}
+
+//void Board::hintPreesed()
 //{
-//	// Assuming the number of sticks is the size of m_sticks vector
-//	int numOfSticks = static_cast<int>(m_stick.size());
-//	for (auto& stick : m_stick)
+//	m_clock.restart();
+//	// Check if it's time to toggle the colors
+//	if (m_clock.getElapsedTime().asSeconds() > m_blinkInterval) 
 //	{
-//		stick->checkAvailableStick(m_stick, numOfSticks);
+//		m_isColor1 = !m_isColor1;
+//		sf::Color currentColor = m_isColor1 ? m_color1 : m_color2;
+//
+//		for (auto it = m_available.begin(); it != m_available.end(); ++it)
+//		{
+//			(*it)->hintColorsChange();
+//		}
+//		m_clock.restart();
 //	}
 //}
 
@@ -223,7 +248,7 @@ void Board::createGridFrame()
 
 int Board::returnSticksAva() const
 {
-	return m_numOfStick; 
+	return m_sitckAvailableCounter;
 }
 
 int Board::returnSticksLeft()const
