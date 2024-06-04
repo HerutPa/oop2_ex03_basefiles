@@ -13,7 +13,7 @@ Board::Board()
 	//locateObjects();
 	std::random_device rd; // î÷åø ìîñôøéí øðãåîìééí
 	std::mt19937 gen(rd()); // îçåìì îñôøéí øðãåîìééí îîùôçú mersenne_twister_engine
-	std::uniform_int_distribution<int> dis(8, 14); // ôéæåø àçéã ùì îñôøéí áéï 30 ìÎ50
+	std::uniform_int_distribution<int> dis(2, 2); // ôéæåø àçéã ùì îñôøéí áéï 30 ìÎ50
 	m_numOfStick = dis(gen); // äùîä ùì îñôø øðãåîìé ìÎm_numOfStic
 
 }
@@ -133,70 +133,126 @@ void Board::findStick(const sf::Vector2f location)
 }
 
 
-void Board::fillAvailableStick()
+//void Board::fillAvailableStick()
+//{
+//	m_available.clear();  // Clear the available sticks vector first
+//	for (auto it = m_stick.begin(); it != m_stick.end(); ++it)
+//	{
+//		if ((*it)->checkAvailableStick())
+//		{
+//			m_available.push_back(*it);
+//		}
+//	}
+//	m_sitckAvailableCounter = m_available.size();
+//}
+
+
+void Board::fillAvailableSticks()
 {
-	m_available.clear();  // Clear the available sticks vector first
-	for (auto it = m_stick.begin(); it != m_stick.end(); ++it)
+	// Clear the previous available sticks
+	m_availableByColor.clear();
+	m_availableByColor.resize(6); // Assuming 6 different colors
+
+	for (const auto& stick : m_stick)
 	{
-		if ((*it)->checkAvailableStick())
+		if (stick->checkAvailableStick())
 		{
-			m_available.push_back(*it);
+			m_availableByColor[stick->getColorIndex()].push_back(stick);
 		}
 	}
 
-	for (auto it = m_stick.begin(); it != m_stick.end(); ++it)
+	m_sitckAvailableCounter = 0;
+	for (const auto& colorSticks : m_availableByColor)
 	{
-		if ((*it)->checkAvailableStick())
-		{
-			m_available.push_back(*it);
-		}
-	}
-	
-	for (auto it = m_stick.begin(); it != m_stick.end(); ++it)
-	{
-		if ((*it)->checkAvailableStick())
-		{
-			m_available.push_back(*it);
-		}
+		m_sitckAvailableCounter += colorSticks.size();
 	}
 
-
-
-
-
-
-
-
-
-	m_sitckAvailableCounter = m_available.size();
 }
+
+void Board::printAvailableSticksByColor() const
+{
+	for (size_t colorIndex = 0; colorIndex < m_availableByColor.size(); ++colorIndex)
+	{
+		std::cout << "Color " << colorIndex << ": ";
+		for (const auto& stick : m_availableByColor[colorIndex])
+		{
+			std::cout << stick->getIndex() << " ";
+		}
+		std::cout << std::endl;
+	}
+}
+
+
+
 
 void Board::hintPressed(sf::RenderWindow& window)
 {
-	for (auto& stick : m_available)
+	for (size_t colorIndex = 0; colorIndex < m_availableByColor.size(); ++colorIndex)
 	{
-
-		stick->setColor(sf::Color::Black);
-		// Draw all elements here, including the updated sticks
-		for (const auto& s : m_available)
+		for (const auto& stick : m_availableByColor[colorIndex])
 		{
-			window.draw(s->getShape());
+			// Change color of all sticks in the current color group to black
+			stick->setColor(sf::Color::Black);
+		}
+
+		// Draw all elements here, including the updated sticks
+		for (const auto& colorSticks : m_availableByColor)
+		{
+			for (const auto& stick : colorSticks)
+			{
+				window.draw(stick->getShape());
+			}
 		}
 		window.display();
 
 		sf::sleep(sf::seconds(0.5)); // Wait for 1 second
 
-		stick->resetColor();
-		// Draw all elements here, including the reset sticks
-		for (const auto& s : m_available)
+		for (const auto& stick : m_availableByColor[colorIndex])
 		{
-			window.draw(s->getShape());
+			// Reset color of all sticks in the current color group
+			stick->resetColor();
+		}
+
+		// Draw all elements here, including the reset sticks
+		for (const auto& colorSticks : m_availableByColor)
+		{
+			for (const auto& stick : colorSticks)
+			{
+				window.draw(stick->getShape());
+			}
 		}
 		window.display();
 
-		sf::sleep(sf::seconds(0.5f)); // Short delay before highlighting next stick
+		sf::sleep(sf::seconds(0.5f)); // Short delay before highlighting next color group
 	}
 }
+
+//void Board::hintPressed(sf::RenderWindow& window)
+//{
+//	for (auto& stick : m_available)
+//	{
+//
+//		stick->setColor(sf::Color::Black);
+//		// Draw all elements here, including the updated sticks
+//		for (const auto& s : m_available)
+//		{
+//			window.draw(s->getShape());
+//		}
+//		window.display();
+//
+//		sf::sleep(sf::seconds(0.5)); // Wait for 1 second
+//
+//		stick->resetColor();
+//		// Draw all elements here, including the reset sticks
+//		for (const auto& s : m_available)
+//		{
+//			window.draw(s->getShape());
+//		}
+//		window.display();
+//
+//		sf::sleep(sf::seconds(0.5f)); // Short delay before highlighting next stick
+//	}
+//}
 
 
 void Board::createBoard()

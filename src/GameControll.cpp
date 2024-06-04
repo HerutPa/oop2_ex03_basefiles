@@ -107,7 +107,7 @@ void GameControll::startGame()
         m_window.clear(WINDOW_COLOR);
         m_board.drawBoard(this->m_window);
         m_toolBar.drawToolBar(m_window);
-        m_board.fillAvailableStick();
+        m_board.fillAvailableSticks();
         UpdateData();
         drawToolBar();
         m_window.display();
@@ -144,14 +144,31 @@ void GameControll::startGame()
             }
         }
 
-        if (m_GameClock.getElapsedTime().asSeconds() > 400)
+        if (m_GameClock.getElapsedTime().asSeconds() > 40)
         {
             m_youLose.setTexture(Resources::instance().getTexture(YouLose));
-            m_youLose.scale(0.8f, 0.8f);
+            m_youLose.scale(2.5f, 2.5f);
             m_window.clear(sf::Color::Color(0, 102, 102));
             m_window.draw(m_youLose);
             m_window.display();
             std::this_thread::sleep_for(std::chrono::seconds(5));
+            m_window.close();
+            break;
+        }
+
+        if (m_board.returnSticksLeft() == 0)
+        {
+            m_youWin.setTexture(Resources::instance().getTexture(YouWin));
+            m_youWin.scale(2.5f, 2.5f);
+            m_window.clear(sf::Color::Color(0, 102, 102));
+            m_window.draw(m_youWin);
+
+            m_window.draw(m_toolbar.getText(0));
+            m_window.draw(m_toolbar.getNum(0));
+
+            m_window.display();
+            std::this_thread::sleep_for(std::chrono::seconds(5));
+
             m_window.close();
             break;
         }
@@ -186,7 +203,7 @@ void GameControll::handleClick(const sf::Vector2f& location)
 
 void GameControll::drawToolBar()
 {
-    for (int word = AVAILABLE; word <= TIME; word++)
+    for (int word = SCORE; word <= TIME; word++)
     {
         m_window.draw(m_toolbar.getText(word));
         m_window.draw(m_toolbar.getNum(word));

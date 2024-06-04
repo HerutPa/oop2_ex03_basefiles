@@ -40,9 +40,12 @@ public:
     bool isLocationInside(const sf::Vector2f& location) const;
     bool isEraseable() const;
     bool checkAvailableStick() const;
+    int returnScore() const;
     int getOverLappedSize();
     sf::RectangleShape& getShape();                // Returns a modifiable reference
     const sf::RectangleShape& getShape() const;
+    int getColorIndex() const { return m_colorIndex; }
+
 
 
 
@@ -54,6 +57,8 @@ private:
     Point m_points[2];
     int m_index;
     int m_score = 0;
+    int m_colorIndex;
+
 
     bool m_isColor1 = true;
     sf::Color m_currentColor;

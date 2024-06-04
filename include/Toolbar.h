@@ -9,6 +9,7 @@ class ToolBar
 {
 public:
 	ToolBar();
+	int getScoreFinish();
 	void init();
 	void drawToolBar(sf::RenderWindow& m_window);
 	bool isButtonPrasedSave(sf::Vector2f location);
@@ -29,7 +30,7 @@ private:
 	//members:
 	sf::Text m_toolbar[TOOL_BAR];
 	sf::Text m_Info[TOOL_BAR];
-	std::string m_Words[TOOL_BAR] = { "Available:", "Left:", "Take:" ,"Time:" };
+	std::string m_Words[TOOL_BAR] = {"Score:", "Available:", "Left:", "Take:" ,"Time:"};
 	int m_info_num[TOOL_BAR];
 	int m_sticksNum;
 	Board m_board;

@@ -17,7 +17,9 @@ public:
 	void drawBoard(sf::RenderWindow&);
 	void createFile(std::ofstream& m_ofile);
 	void init();
-	void fillAvailableStick();
+	//void fillAvailableStick();
+	void fillAvailableSticks();
+	void printAvailableSticksByColor() const;
 	void hintPressed(sf::RenderWindow& m_window);
 	//void checkAvailableStick(const std::vector<std::shared_ptr<Stick>>& sticks, int numOfSticks);
 	int returnSticksAva() const;
@@ -41,6 +43,8 @@ private:
 	sf::RectangleShape m_grid_frame[4];
 	std::vector<sf::RectangleShape> m_rectangles;
 	std::vector<std::shared_ptr <Stick>> m_available;
+	std::vector<std::vector<std::shared_ptr<Stick>>> m_availableByColor;
+
 	sf::Sprite m_backgroung;
     
 	////functions

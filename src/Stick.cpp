@@ -19,6 +19,11 @@ Stick::Stick(const int row, const int length)
     int y = 100 + distribution_y(generator) * STICK_LENGTH;
     std::uniform_int_distribution<int> distribution2(0, 5);
     int randomNumColor = distribution2(generator);
+
+
+    m_colorIndex = randomNumColor; // Store the color index
+
+
     std::uniform_int_distribution<int> distribution3(10.f, 355.f);
     int randomNumAngel = distribution3(generator);
 
@@ -28,7 +33,7 @@ Stick::Stick(const int row, const int length)
     m_stick.setRotation(randomNumAngel);
     //m_currentColor = m_stick.setFillColor(Resources::instance().getColorArray()[randomNumColor]);
     m_currentColor = Resources::instance().getColorArray()[randomNumColor];
-    m_score = (randomNumColor + 1);
+    m_score = (6-randomNumColor);
     m_stick.setFillColor(m_currentColor);
     m_stick.setOutlineThickness(OUTLINE);
     m_stick.setOutlineColor(sf::Color::Black);
@@ -144,6 +149,10 @@ bool Stick::checkAvailableStick() const
 }
 
 
+int Stick::returnScore() const
+{
+    return m_score;
+}
 
 
 bool Stick::isEraseable() const

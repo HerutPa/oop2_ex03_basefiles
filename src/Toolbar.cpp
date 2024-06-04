@@ -5,7 +5,7 @@
 ToolBar::ToolBar()
 {
 	//set the word:
-	for (int word = AVAILABLE; word <= TIME; word++)
+	for (int word = SCORE; word <= TIME; word++)
 	{
 		m_toolbar[word].setFont(Resources::instance().getFont());
 		m_toolbar[word].setCharacterSize(30);
@@ -18,8 +18,9 @@ ToolBar::ToolBar()
 	m_info_num[LEFT] = m_board.returnSticksLeft();
 	m_info_num[TAKE] = 0;
 	m_info_num[TIME] = 0;
+	m_info_num[SCORE] = 0;
 
-	for (int word = AVAILABLE; word <= TIME; word++)
+	for (int word = SCORE; word <= TIME; word++)
 	{
 		m_Info[word].setFont(Resources::instance().getFont());
 		m_Info[word].setCharacterSize(30);
@@ -28,6 +29,12 @@ ToolBar::ToolBar()
 		m_Info[word].setPosition(50.f, 40 + word * 100.f + 100);
 	}	
 }
+
+//int ToolBar:: getScoreFinish()
+//{
+//	
+//
+//}
 
 void ToolBar::init()
 {

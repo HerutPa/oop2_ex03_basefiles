@@ -17,6 +17,7 @@ enum Colors
 
 enum ToolBarWord
 {
+    SCORE,
     AVAILABLE,
     LEFT,
     TAKE,
@@ -72,7 +73,7 @@ const float HEX_WIDTH = RADIUS * std::sqrt(3.f) + (2*OUTLINE);
 //const float STICK_WIDTH = WIDTH + (2 * OUTLINE);
 //const float STICK_LENGTH = LENGTH + (2 * OUTLINE);
 
-const int TOOL_BAR = 4;
+const int TOOL_BAR = 5;
 //enum ToolBarWord { LIFE, SCORE, LEVEL, TIME, KEYCOUNTER };
 
 //grid
