@@ -146,22 +146,20 @@ void Board::fillAvailableStick()
 	m_sitckAvailableCounter = m_available.size();
 }
 
-//void Board::hintPreesed()
-//{
-//	m_clock.restart();
-//	// Check if it's time to toggle the colors
-//	if (m_clock.getElapsedTime().asSeconds() > m_blinkInterval) 
-//	{
-//		m_isColor1 = !m_isColor1;
-//		sf::Color currentColor = m_isColor1 ? m_color1 : m_color2;
-//
-//		for (auto it = m_available.begin(); it != m_available.end(); ++it)
-//		{
-//			(*it)->hintColorsChange();
-//		}
-//		m_clock.restart();
-//	}
-//}
+
+void Board::hintPreesed()
+{
+	m_clock.restart();
+	// Check if it's time to toggle the colors
+	if (m_clock.getElapsedTime().asSeconds() > m_blinkInterval) 
+	{
+		for (auto it = m_available.begin(); it != m_available.end(); ++it)
+		{
+			(*it)->hintColorsChange();
+		}
+		m_clock.restart();
+	}
+}
 
 
 void Board::createBoard()

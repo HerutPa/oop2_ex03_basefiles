@@ -18,7 +18,7 @@ public:
 	void createFile(std::ofstream& m_ofile);
 	void init();
 	void fillAvailableStick();
-	//void hintPreesed();
+	void hintPreesed();
 	void checkAvailableStick(const std::vector<std::shared_ptr<Stick>>& sticks, int numOfSticks);
 	int returnSticksAva() const;
 	int returnSticksLeft()const;
@@ -34,10 +34,7 @@ private:
 	int m_sitckAvailableCounter;
 
 	sf::Clock m_clock;
-	bool m_isColor1 = true;
 	float m_blinkInterval = 0.5f;
-	sf::Color m_color1 = sf::Color::Red;
-	sf::Color m_color2 = sf::Color::Transparent;
 
 	int counter = 0;
 	std::vector<std::shared_ptr <Stick>> m_stick;

@@ -179,7 +179,7 @@ void GameControll::handleClick(const sf::Vector2f& location)
         }
         else if (m_toolBar.isButtonPrasedHint(location))
         {
-            //m_board.hintPreesed();
+            m_board.hintPreesed();
         }
     }
     else

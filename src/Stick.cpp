@@ -26,7 +26,9 @@ Stick::Stick(const int row, const int length)
     m_stick.setOrigin(25, 25);
     m_stick.setPosition(x, y);
     m_stick.setRotation(randomNumAngel);
-    m_stick.setFillColor(Resources::instance().getColorArray()[randomNumColor]);
+    //m_currentColor = m_stick.setFillColor(Resources::instance().getColorArray()[randomNumColor]);
+    m_currentColor = Resources::instance().getColorArray()[randomNumColor];
+    m_stick.setFillColor(m_currentColor);
     m_stick.setOutlineThickness(OUTLINE);
     m_stick.setOutlineColor(sf::Color::Black);
     m_location.x = x;
@@ -71,7 +73,7 @@ void Stick::deleteOverLapped()
 bool Stick::isOverlaped(const sf::RectangleShape& rec1, const sf::RectangleShape& rec2)
 {
     auto getVertices = [](const sf::RectangleShape& rec)
-        {
+    {
         sf::Transform transform = rec.getTransform();
         sf::FloatRect rect = rec.getLocalBounds();
         return std::vector<sf::Vector2f>
@@ -81,7 +83,7 @@ bool Stick::isOverlaped(const sf::RectangleShape& rec1, const sf::RectangleShape
                 transform.transformPoint(sf::Vector2f(rect.left + rect.width, rect.top + rect.height)),
                 transform.transformPoint(sf::Vector2f(rect.left, rect.top + rect.height))
         };
-        };
+    };
 
     std::vector<sf::Vector2f> vertices1 = getVertices(rec1);
     std::vector<sf::Vector2f> vertices2 = getVertices(rec2);
@@ -150,12 +152,6 @@ bool Stick::checkAvailableStick() const
     return false; 
 }
 
-
-//void Stick::hintColorsChange()
-//{
-//
-//}
-
 bool Stick::isEraseable() const
 {
     for (const auto& overlappedStick : m_overlapped)
@@ -166,6 +162,16 @@ bool Stick::isEraseable() const
         }
     }
     return true;
+}
+
+void Stick::hintColorsChange()
+{
+    m_currentColor = (m_currentColor == m_color2) ? m_color1 : m_color2;
+    m_stick.setFillColor(m_currentColor);
+    /*if (m_currentColor != m_color2)
+    {
+        m_stick.setFillColor(m_color2);
+    }*/
 }
 
 // min and max functions
