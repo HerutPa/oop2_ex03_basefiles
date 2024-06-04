@@ -264,22 +264,26 @@ Point Stick::getPoint(int index) const
 }
 
 
-sf::RectangleShape& Stick::getrec() const {
+sf::RectangleShape& Stick::getrec() const 
+{
     return const_cast<sf::RectangleShape&>(m_stick);
 }
 
 
-const int Stick::getIndex() const {
+const int Stick::getIndex() const 
+{
     return m_index;
 }
 
 
-const sf::Color Stick::getColor() const {
+const sf::Color Stick::getColor() const 
+{
     return m_stick.getFillColor();
 }
 
 
-const sf::Vector2f Stick::getLocation() const {
+const sf::Vector2f Stick::getLocation() const 
+{
     return m_location;
 }
 
@@ -291,11 +295,13 @@ void Stick::setColor(const sf::Color& color)
 
 }
 
-sf::RectangleShape& Stick::getShape() {
+sf::RectangleShape& Stick::getShape() 
+{
     return m_stick;
 }
 
-const sf::RectangleShape& Stick::getShape() const {
+const sf::RectangleShape& Stick::getShape() const 
+{
     return m_stick;
 }
 
@@ -313,5 +319,8 @@ bool Stick::isLocationInside(const sf::Vector2f& location) const
 }
 
 
-
+int Stick::getStickScore()
+{
+    return m_score;
+}
 

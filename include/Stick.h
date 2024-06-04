@@ -1,18 +1,16 @@
 #pragma once
-
 #include <SFML/Graphics.hpp>
 #include <Resources.h>
-#include <random> 
-#include <iostream>
-#include <memory>
-#include <vector>
 #include <algorithm> // For std::max and std::min
-#include <cmath>
-#include <math.h>
+#include <iostream>
+#include <string_view>
 #include <complex>
 #include <numeric>
-#include <string_view>
-
+#include <memory>
+#include <vector>
+#include <random>
+#include <math.h>
+#include <cmath>
 
 struct Point
 {
@@ -27,52 +25,56 @@ public:
     Stick();
     Stick(const int row, const int length);
     
-    sf::RectangleShape& getrec() const;
-    const int getIndex() const;
-    const sf::Color getColor() const;
+    const sf::RectangleShape& getShape() const;
     const sf::Vector2f getLocation() const;
-    void setColor(const sf::Color& color);
-    void resetColor();
-    static bool isOverlaped(const sf::RectangleShape& rec1, const sf::RectangleShape& rec2);
+    const sf::Color getColor() const;
+    const int getIndex() const;
+
     void addOverLapped(const std::shared_ptr<Stick>& overlap);
+    void setColor(const sf::Color& color);
     void hintColorsChange();
     void deleteOverLapped();
+    void resetColor();
+  
+    static bool isOverlaped(const sf::RectangleShape& rec1, const sf::RectangleShape& rec2);
     bool isLocationInside(const sf::Vector2f& location) const;
     bool isEraseable() const;
     bool checkAvailableStick() const;
+
+    int getColorIndex() const { return m_colorIndex; }
     int returnScore() const;
     int getOverLappedSize();
-    sf::RectangleShape& getShape();                // Returns a modifiable reference
-    const sf::RectangleShape& getShape() const;
-    int getColorIndex() const { return m_colorIndex; }
+    int getStickScore();
 
-
-
+    sf::RectangleShape& getrec() const;
+    sf::RectangleShape& getShape();
 
 private:
+    Point getEndPoint(const Point& startP, int length, int degree) const;
+    Point getPoint(int index) const;
+    Point m_points[2];
+
     std::vector<std::shared_ptr <Stick>> m_overlapped;
+
     sf::RectangleShape m_stick;
     sf::Vector2f m_location;
     sf::FloatRect m_bounds;
-    Point m_points[2];
-    int m_index;
-    int m_score = 0;
-    int m_colorIndex;
-
-
-    bool m_isColor1 = true;
     sf::Color m_currentColor;
     sf::Color m_color1 = sf::Color::Red;
     sf::Color m_color2 = sf::Color::Transparent;
-
-    void setColor(const Colors);
+   
+    int orientation(Point p, Point q, Point r) const;
     int min(int a, int b) const;
     int max(int a, int b) const;
-    int orientation(Point p, Point q, Point r) const;
-    bool onSegment(Point p, Point q, Point r) const;
-    bool doIntersect(Point p1, Point q1, Point p2, Point q2) const;
+    int m_colorIndex;
+    int m_score = 0;
+    int m_index;
 
-    Point getPoint(int index) const;
-    Point getEndPoint(const Point& startP, int length, int degree) const;
+    bool doIntersect(Point p1, Point q1, Point p2, Point q2) const;
+    bool onSegment(Point p, Point q, Point r) const;
+    bool m_isColor1 = true;
+
+    void setColor(const Colors);
+
 };
 

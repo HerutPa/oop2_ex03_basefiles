@@ -1,31 +1,17 @@
-﻿#pragma once
-
-#include "Board.h"
-#include <iostream>
-#include <iterator>
-
+﻿#include "Board.h"
 
 
 Board::Board()
 {
-	createRectangles();
-	createGridFrame();
-	//locateObjects();
-	std::random_device rd; // î÷åø ìîñôøéí øðãåîìééí
-	std::mt19937 gen(rd()); // îçåìì îñôøéí øðãåîìééí îîùôçú mersenne_twister_engine
-	std::uniform_int_distribution<int> dis(2, 2); // ôéæåø àçéã ùì îñôøéí áéï 30 ìÎ50
-	m_numOfStick = dis(gen); // äùîä ùì îñôø øðãåîìé ìÎm_numOfStic
-
+	std::random_device rd; 
+	std::mt19937 gen(rd());
+	//Grill the number of sticks on the board
+	std::uniform_int_distribution<int> dis(20, 25);
+	//save the number of sticks
+	m_numOfStick = dis(gen); 
 }
 
-void Board::createRectangles()
-{
-	for (int rectangle = 0; rectangle < 6; ++rectangle)
-	{
-		m_rectangles.push_back(createRectangle(rectangle));
-	}
-}
-
+//This function creates and opens an existing file for the game board. 
 void Board::createFile(std::ofstream& m_ofile)
 {
 	//m_ofile.open("Board.txt"); // פתיחת הקובץ לכתיבה
@@ -65,7 +51,7 @@ void Board::createFile(std::ofstream& m_ofile)
 	}
 }
 
-
+//This function checks the integrity of the file.
 void Board::validateFile(const std::string & fileName, const std::string & expectedExtension) 
 {
 	// Check if file exists
@@ -124,6 +110,7 @@ void Board::findStick(const sf::Vector2f location)
 			if ((*regular_it)->isEraseable())
 			{
 				m_sitckTakeCounter++;
+				m_scoureCounter += (*regular_it)->getStickScore();
 				(*regular_it)->deleteOverLapped();
 				m_stick.erase(regular_it);
 				break;
@@ -132,19 +119,6 @@ void Board::findStick(const sf::Vector2f location)
 	}
 }
 
-
-//void Board::fillAvailableStick()
-//{
-//	m_available.clear();  // Clear the available sticks vector first
-//	for (auto it = m_stick.begin(); it != m_stick.end(); ++it)
-//	{
-//		if ((*it)->checkAvailableStick())
-//		{
-//			m_available.push_back(*it);
-//		}
-//	}
-//	m_sitckAvailableCounter = m_available.size();
-//}
 
 
 void Board::fillAvailableSticks()
@@ -169,6 +143,7 @@ void Board::fillAvailableSticks()
 
 }
 
+
 void Board::printAvailableSticksByColor() const
 {
 	for (size_t colorIndex = 0; colorIndex < m_availableByColor.size(); ++colorIndex)
@@ -181,8 +156,6 @@ void Board::printAvailableSticksByColor() const
 		std::cout << std::endl;
 	}
 }
-
-
 
 
 void Board::hintPressed(sf::RenderWindow& window)
@@ -227,33 +200,6 @@ void Board::hintPressed(sf::RenderWindow& window)
 	}
 }
 
-//void Board::hintPressed(sf::RenderWindow& window)
-//{
-//	for (auto& stick : m_available)
-//	{
-//
-//		stick->setColor(sf::Color::Black);
-//		// Draw all elements here, including the updated sticks
-//		for (const auto& s : m_available)
-//		{
-//			window.draw(s->getShape());
-//		}
-//		window.display();
-//
-//		sf::sleep(sf::seconds(0.5)); // Wait for 1 second
-//
-//		stick->resetColor();
-//		// Draw all elements here, including the reset sticks
-//		for (const auto& s : m_available)
-//		{
-//			window.draw(s->getShape());
-//		}
-//		window.display();
-//
-//		sf::sleep(sf::seconds(0.5f)); // Short delay before highlighting next stick
-//	}
-//}
-
 
 void Board::createBoard()
 {
@@ -270,22 +216,13 @@ void Board::createBoard()
 		}
 		m_stick.push_back(temp);
 	}
-
-
-	/*if (m_stick[m_col - 1].getColor() == m_stick[m_row * m_col - m_col].getColor())
-	{
-		m_stick[COMPUTER_INDEX].get().setFillColor(Resources::instance().getColorArray()[Cyan]);
-		m_stick[PLAYER_INDEX].get().setFillColor(Resources::instance().getColorArray()[Blue]);
-	}*/
 }
 
 
 void Board::init()
 {
 	m_stick.clear();
-	//m_graph.clear();
 	createBoard();
-	//connectNeighbors();
 }
 
 
@@ -302,39 +239,6 @@ void Board::drawBoard(sf::RenderWindow& window)
 	{
 		window.draw(m_grid_frame[rectangle]);
 	}
-
-	//window.draw(m_back);
-}
-
-
-void Board::createGridFrame()
-{
-	// Define the thickness of the border
-	//const float borderThickness = 8.0f;
-
-	//// up
-	//m_grid_frame[0].setSize(sf::Vector2f(GRID_WIDTH , borderThickness));
-	//m_grid_frame[0].setFillColor(sf::Color::Black);
-	//m_grid_frame[0].setPosition(sf::Vector2f(((WINDOW_WIDTH / 2) - (GRID_WIDTH / 2) - RADIUS),
-	//	(WINDOW_HEIGHT / 2) - (GRID_HEGHT / 2) - RADIUS - borderThickness));
-
-	//// down
-	//m_grid_frame[1].setSize(sf::Vector2f(GRID_WIDTH, borderThickness));
-	//m_grid_frame[1].setFillColor(sf::Color::Black);
-	//m_grid_frame[1].setPosition(sf::Vector2f((WINDOW_WIDTH / 2) - (GRID_WIDTH / 2) - RADIUS,
-	//	(WINDOW_HEIGHT / 2) + (GRID_HEGHT / 2) - RADIUS));
-
-	//// right
-	//m_grid_frame[2].setSize(sf::Vector2f(borderThickness, GRID_HEGHT + RADIUS));
-	//m_grid_frame[2].setFillColor(sf::Color::Black);
-	//m_grid_frame[2].setPosition(sf::Vector2f((WINDOW_WIDTH / 2) + (GRID_WIDTH / 2) - RADIUS - borderThickness,
-	//	(WINDOW_HEIGHT / 2) - (GRID_HEGHT / 2) - RADIUS));
-
-	//// left
-	//m_grid_frame[3].setSize(sf::Vector2f(borderThickness, GRID_HEGHT + RADIUS));
-	//m_grid_frame[3].setFillColor(sf::Color::Black);
-	//m_grid_frame[3].setPosition(sf::Vector2f((WINDOW_WIDTH / 2) - (GRID_WIDTH / 2) - RADIUS,
-	//	(WINDOW_HEIGHT / 2) - (GRID_HEGHT / 2) - RADIUS));
 }
 
 int Board::returnSticksAva() const
@@ -350,4 +254,9 @@ int Board::returnSticksLeft()const
 int Board::returnSticksTake()const
 {
 	return m_sitckTakeCounter;
+}
+
+int Board::returnScore()const
+{
+	return m_scoureCounter;
 }

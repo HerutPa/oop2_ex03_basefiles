@@ -18,7 +18,7 @@ ToolBar::ToolBar()
 	m_info_num[LEFT] = m_board.returnSticksLeft();
 	m_info_num[TAKE] = 0;
 	m_info_num[TIME] = 0;
-	m_info_num[SCORE] = 0;
+	m_info_num[SCORE] = m_board.returnScore();
 
 	for (int word = SCORE; word <= TIME; word++)
 	{
@@ -30,11 +30,6 @@ ToolBar::ToolBar()
 	}	
 }
 
-//int ToolBar:: getScoreFinish()
-//{
-//	
-//
-//}
 
 void ToolBar::init()
 {
@@ -120,4 +115,11 @@ void ToolBar::setSticksTake(int take)
 	m_info_num[TAKE] = take;
 	m_Info[TAKE].setString(std::to_string(take));
 }
+
+void ToolBar::setScore(int take)
+{
+	m_info_num[SCORE] = take;
+	m_Info[SCORE].setString(std::to_string(take));
+}
+
 
