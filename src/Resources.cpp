@@ -1,38 +1,43 @@
-#pragma once
-
 #include "Resources.h"
+
 
 Resources::Resources()
 {
 	LoadFromFile();
 }
 
+//Singleton 
 Resources& Resources::instance()
 {
 	static Resources Resource;
 	return Resource;
 }
 
+//return m_colorArray
 const sf::Color* Resources::getColorArray()const
 {
 	return m_colorArray;
 }
 
+//return the picture
 const sf::Texture& Resources::getTexture(const Textures texture)const
 {
 	return m_textures[texture];
 }
 
+//return the button
 const sf::Texture& Resources::getButton(const Button button)const
 {
 	return m_Buttons[button];
 }
 
+//return the font
 const sf::Font& Resources::getFont()const
 {
 	return m_font;
 }
 
+//Load From File
 void Resources::LoadFromFile()
 {
 	m_textures[X_texture].loadFromFile("X.png");

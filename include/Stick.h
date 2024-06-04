@@ -32,7 +32,6 @@ public:
 
     void addOverLapped(const std::shared_ptr<Stick>& overlap);
     void setColor(const sf::Color& color);
-    void hintColorsChange();
     void deleteOverLapped();
     void resetColor();
   

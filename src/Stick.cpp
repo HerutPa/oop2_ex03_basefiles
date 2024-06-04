@@ -167,16 +167,6 @@ bool Stick::isEraseable() const
     return true;
 }
 
-void Stick::hintColorsChange()
-{
-    m_currentColor = (m_currentColor == m_color2) ? m_color1 : m_color2;
-    m_stick.setFillColor(m_currentColor);
-    /*if (m_currentColor != m_color2)
-    {
-        m_stick.setFillColor(m_color2);
-    }*/
-}
-
 // min and max functions
 int Stick::min(int a, int b) const
 {
@@ -193,7 +183,6 @@ int Stick::max(int a, int b) const
 void Stick::addOverLapped(const std::shared_ptr<Stick>& overlap)
 {
     m_overlapped.push_back(overlap);
-    std::cout << m_index << " ";
 }
 
 

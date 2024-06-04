@@ -16,7 +16,6 @@ public:
 	void drawBoard(sf::RenderWindow&);
 	void createFile(std::ofstream& m_ofile);
 	void findStick(const sf::Vector2f);
-	void printAvailableSticksByColor() const;
 	void fillAvailableSticks();
 	void init();
 	int returnSticksLeft()const;

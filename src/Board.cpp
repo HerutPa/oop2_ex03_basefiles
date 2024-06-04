@@ -82,7 +82,7 @@ void Board::validateFile(const std::string & fileName, const std::string & expec
 	std::cout << "File validation successful." << std::endl;
 }
 
-
+//This function creates the rectangels on the board ??????????????????????????????
 const sf::RectangleShape Board::createRectangle(const int index) const
 {
 	sf::RectangleShape rec;
@@ -98,11 +98,14 @@ const sf::RectangleShape Board::createRectangle(const int index) const
 	return rec;
 }
 
-
+//This function finds the stick location on the board, we chack here if the 
+//stick was pressed by the user.
 void Board::findStick(const sf::Vector2f location)
 {
+	//loop to go over all the sticks in the stick vector
 	for (auto it = m_stick.rbegin(); it != m_stick.rend(); ++it)
 	{
+		//Checking whether the stick is pressed by the user
 		if ((*it)->isLocationInside(location))
 		{
 			auto regular_it = (it + 1).base();
@@ -111,6 +114,7 @@ void Board::findStick(const sf::Vector2f location)
 			{
 				m_sitckTakeCounter++;
 				m_scoureCounter += (*regular_it)->getStickScore();
+				//delete from the over lapped sticks the current stick
 				(*regular_it)->deleteOverLapped();
 				m_stick.erase(regular_it);
 				break;
@@ -119,22 +123,24 @@ void Board::findStick(const sf::Vector2f location)
 	}
 }
 
-
-
+//This function creates the vector of sticks that can currently 
+//be picked up by the user from the board
 void Board::fillAvailableSticks()
 {
 	// Clear the previous available sticks
 	m_availableByColor.clear();
 	m_availableByColor.resize(6); // Assuming 6 different colors
-
+	//loop to go iver all the sticks on the board
 	for (const auto& stick : m_stick)
 	{
+		//check if the stick can be picked up from the board. 
 		if (stick->checkAvailableStick())
 		{
+			//add to the Available vector
 			m_availableByColor[stick->getColorIndex()].push_back(stick);
 		}
 	}
-
+	//find the size of all the Available sticks on the board.
 	m_sitckAvailableCounter = 0;
 	for (const auto& colorSticks : m_availableByColor)
 	{
@@ -143,23 +149,10 @@ void Board::fillAvailableSticks()
 
 }
 
-
-void Board::printAvailableSticksByColor() const
-{
-	for (size_t colorIndex = 0; colorIndex < m_availableByColor.size(); ++colorIndex)
-	{
-		std::cout << "Color " << colorIndex << ": ";
-		for (const auto& stick : m_availableByColor[colorIndex])
-		{
-			std::cout << stick->getIndex() << " ";
-		}
-		std::cout << std::endl;
-	}
-}
-
-
+//This function marks the Available sticks on the board by the score = color. 
 void Board::hintPressed(sf::RenderWindow& window)
 {
+	// a loop to go over the vector of the available sticks on the board
 	for (size_t colorIndex = 0; colorIndex < m_availableByColor.size(); ++colorIndex)
 	{
 		for (const auto& stick : m_availableByColor[colorIndex])
@@ -178,7 +171,7 @@ void Board::hintPressed(sf::RenderWindow& window)
 		}
 		window.display();
 
-		sf::sleep(sf::seconds(0.5)); // Wait for 1 second
+		sf::sleep(sf::seconds(0.5)); // Wait for 0.5 second
 
 		for (const auto& stick : m_availableByColor[colorIndex])
 		{
@@ -200,25 +193,30 @@ void Board::hintPressed(sf::RenderWindow& window)
 	}
 }
 
-
+//This function creates the sticks on the game board
 void Board::createBoard()
 {
+	//this loop produce sticks as the number of sticks griled
 	for (int row = 0; row < m_numOfStick; ++row)
 	{
 		auto temp = std::make_shared<Stick>(row, 6);
+		//check if the stick we created is overlapped with other sticks
 		for (const auto& stick1 : m_stick)
 		{
 			if (Stick::isOverlaped(temp->getrec(), stick1->getrec()))
 			{
+				//Adding to the vector of the stick we created
 				temp.get()->addOverLapped(stick1);
+				//Adding to the vector of the sticks with which the new stick collides
 				stick1.get()->addOverLapped(temp);
 			}
 		}
+		//Adding to the sticks vector
 		m_stick.push_back(temp);
 	}
 }
 
-
+//This function initialize  the game
 void Board::init()
 {
 	m_stick.clear();
@@ -226,36 +224,42 @@ void Board::init()
 }
 
 
-//àéê ìöééø àú úçéìú äîùç÷ . ìôé îä ?
+//This function draws the board
 void Board::drawBoard(sf::RenderWindow& window)
 {
-	//window.clear();
+	//Delete everything that was in the window until now
 	window.clear(sf::Color::Color(210, 210, 210));
+	//Draw the sticks
 	for (int stick = 0; stick < m_stick.size(); stick++)
 	{
 		window.draw(m_stick[stick]->getrec());
 	}
+	//Draw the franme of the buttons
 	for (int rectangle = 0; rectangle < 4; rectangle++)
 	{
 		window.draw(m_grid_frame[rectangle]);
 	}
 }
 
+//This function returns the number of Available sticks on the board
 int Board::returnSticksAva() const
 {
 	return m_sitckAvailableCounter;
 }
 
+//This function returns the number of sticks left on the board
 int Board::returnSticksLeft()const
 {
 	return m_numOfStick - m_sitckTakeCounter;
 }
 
+//This function returns the number of sticks take from the board
 int Board::returnSticksTake()const
 {
 	return m_sitckTakeCounter;
 }
 
+//This function returns the score depending on the sticks collected
 int Board::returnScore()const
 {
 	return m_scoureCounter;
