@@ -28,6 +28,7 @@ Stick::Stick(const int row, const int length)
     m_stick.setRotation(randomNumAngel);
     //m_currentColor = m_stick.setFillColor(Resources::instance().getColorArray()[randomNumColor]);
     m_currentColor = Resources::instance().getColorArray()[randomNumColor];
+    m_score = (randomNumColor + 1);
     m_stick.setFillColor(m_currentColor);
     m_stick.setOutlineThickness(OUTLINE);
     m_stick.setOutlineColor(sf::Color::Black);
@@ -125,7 +126,7 @@ bool Stick::isOverlaped(const sf::RectangleShape& rec1, const sf::RectangleShape
 //Available sticks vector update
 bool Stick::checkAvailableStick() const
 {
-    if (this->m_overlapped.empty())
+    if (this->m_overlapped.empty()) 
     {
         return true;
     }
@@ -133,24 +134,17 @@ bool Stick::checkAvailableStick() const
     {
         for (const auto& stickCur : m_overlapped)
         {
-            int notAbove = 0;
-            for (const auto& overlappedStick : stickCur->m_overlapped)
+            if (getIndex() < stickCur->getIndex())
             {
-                int this_index = getIndex();
-                int ovlap = overlappedStick->getIndex(); 
-                if (getIndex() > overlappedStick->getIndex())
-                {
-                    notAbove++;
-                }
-            }
-            if (notAbove == stickCur->m_overlapped.size())
-            {
-                return true;
+                return false;
             }
         }
     }
-    return false; 
+    return true;
 }
+
+
+
 
 bool Stick::isEraseable() const
 {
@@ -281,8 +275,26 @@ const sf::Vector2f Stick::getLocation() const {
 }
 
 
-void Stick::setColor(const Colors color) {
-    m_stick.setFillColor(Resources::instance().getColorArray()[color]);
+void Stick::setColor(const sf::Color& color)
+{
+    m_stick.setFillColor(color);
+    std::cout << "after set color    ";
+
+}
+
+sf::RectangleShape& Stick::getShape() {
+    return m_stick;
+}
+
+const sf::RectangleShape& Stick::getShape() const {
+    return m_stick;
+}
+
+void Stick::resetColor()
+{
+    m_stick.setFillColor(m_currentColor);
+    std::cout << "after reset color   ";
+
 }
 
 

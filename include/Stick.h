@@ -31,6 +31,8 @@ public:
     const int getIndex() const;
     const sf::Color getColor() const;
     const sf::Vector2f getLocation() const;
+    void setColor(const sf::Color& color);
+    void resetColor();
     static bool isOverlaped(const sf::RectangleShape& rec1, const sf::RectangleShape& rec2);
     void addOverLapped(const std::shared_ptr<Stick>& overlap);
     void hintColorsChange();
@@ -39,6 +41,8 @@ public:
     bool isEraseable() const;
     bool checkAvailableStick() const;
     int getOverLappedSize();
+    sf::RectangleShape& getShape();                // Returns a modifiable reference
+    const sf::RectangleShape& getShape() const;
 
 
 
@@ -49,6 +53,7 @@ private:
     sf::FloatRect m_bounds;
     Point m_points[2];
     int m_index;
+    int m_score = 0;
 
     bool m_isColor1 = true;
     sf::Color m_currentColor;

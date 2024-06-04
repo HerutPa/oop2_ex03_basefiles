@@ -13,7 +13,7 @@ Board::Board()
 	//locateObjects();
 	std::random_device rd; // î÷åø ìîñôøéí øðãåîìééí
 	std::mt19937 gen(rd()); // îçåìì îñôøéí øðãåîìééí îîùôçú mersenne_twister_engine
-	std::uniform_int_distribution<int> dis(5, 10); // ôéæåø àçéã ùì îñôøéí áéï 30 ìÎ50
+	std::uniform_int_distribution<int> dis(8, 14); // ôéæåø àçéã ùì îñôøéí áéï 30 ìÎ50
 	m_numOfStick = dis(gen); // äùîä ùì îñôø øðãåîìé ìÎm_numOfStic
 
 }
@@ -143,21 +143,58 @@ void Board::fillAvailableStick()
 			m_available.push_back(*it);
 		}
 	}
+
+	for (auto it = m_stick.begin(); it != m_stick.end(); ++it)
+	{
+		if ((*it)->checkAvailableStick())
+		{
+			m_available.push_back(*it);
+		}
+	}
+	
+	for (auto it = m_stick.begin(); it != m_stick.end(); ++it)
+	{
+		if ((*it)->checkAvailableStick())
+		{
+			m_available.push_back(*it);
+		}
+	}
+
+
+
+
+
+
+
+
+
 	m_sitckAvailableCounter = m_available.size();
 }
 
-
-void Board::hintPreesed()
+void Board::hintPressed(sf::RenderWindow& window)
 {
-	m_clock.restart();
-	// Check if it's time to toggle the colors
-	if (m_clock.getElapsedTime().asSeconds() > m_blinkInterval) 
+	for (auto& stick : m_available)
 	{
-		for (auto it = m_available.begin(); it != m_available.end(); ++it)
+
+		stick->setColor(sf::Color::Black);
+		// Draw all elements here, including the updated sticks
+		for (const auto& s : m_available)
 		{
-			(*it)->hintColorsChange();
+			window.draw(s->getShape());
 		}
-		m_clock.restart();
+		window.display();
+
+		sf::sleep(sf::seconds(0.5)); // Wait for 1 second
+
+		stick->resetColor();
+		// Draw all elements here, including the reset sticks
+		for (const auto& s : m_available)
+		{
+			window.draw(s->getShape());
+		}
+		window.display();
+
+		sf::sleep(sf::seconds(0.5f)); // Short delay before highlighting next stick
 	}
 }
 

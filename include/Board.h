@@ -18,8 +18,8 @@ public:
 	void createFile(std::ofstream& m_ofile);
 	void init();
 	void fillAvailableStick();
-	void hintPreesed();
-	void checkAvailableStick(const std::vector<std::shared_ptr<Stick>>& sticks, int numOfSticks);
+	void hintPressed(sf::RenderWindow& m_window);
+	//void checkAvailableStick(const std::vector<std::shared_ptr<Stick>>& sticks, int numOfSticks);
 	int returnSticksAva() const;
 	int returnSticksLeft()const;
 	int returnSticksTake()const;

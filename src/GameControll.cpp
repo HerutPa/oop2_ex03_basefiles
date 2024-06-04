@@ -107,12 +107,7 @@ void GameControll::startGame()
         m_window.clear(WINDOW_COLOR);
         m_board.drawBoard(this->m_window);
         m_toolBar.drawToolBar(m_window);
-        //int numOfSticks = m_board.returnSticksLeft();
         m_board.fillAvailableStick();
-
-
-        m_window.draw(m_score[0]);
-        m_window.draw(m_score[1]);
         UpdateData();
         drawToolBar();
         m_window.display();
@@ -149,7 +144,7 @@ void GameControll::startGame()
             }
         }
 
-        if (m_GameClock.getElapsedTime().asSeconds() > 40)
+        if (m_GameClock.getElapsedTime().asSeconds() > 400)
         {
             m_youLose.setTexture(Resources::instance().getTexture(YouLose));
             m_youLose.scale(0.8f, 0.8f);
@@ -179,7 +174,7 @@ void GameControll::handleClick(const sf::Vector2f& location)
         }
         else if (m_toolBar.isButtonPrasedHint(location))
         {
-            m_board.hintPreesed();
+            m_board.hintPressed(m_window);
         }
     }
     else
