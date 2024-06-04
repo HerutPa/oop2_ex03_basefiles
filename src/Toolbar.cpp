@@ -20,6 +20,7 @@ ToolBar::ToolBar()
 	m_info_num[TIME] = 0;
 	m_info_num[SCORE] = m_board.returnScore();
 
+	//set the data
 	for (int word = SCORE; word <= TIME; word++)
 	{
 		m_Info[word].setFont(Resources::instance().getFont());
@@ -30,23 +31,22 @@ ToolBar::ToolBar()
 	}	
 }
 
-
+//initialize the tool bar data
 void ToolBar::init()
 {
 	//toolbar position
 	m_outline.setSize(sf::Vector2(200.f, 100.f));
 	m_outline.setPosition(0.f, 0.f);
-
 	//Style
 	m_outline.setOutlineColor(sf::Color::Color(0, 0, 0));
 	m_outline.setOutlineThickness(4.f);
 	m_outline.setFillColor(sf::Color::Color(255, 255, 255));
-
+	//the save button
 	m_recSave.setSize(sf::Vector2f(100.f, 100.f));
 	m_textureS.loadFromFile("save.png");
 	m_recSave.setTexture(&m_textureS);
 	m_recSave.setPosition(sf::Vector2f(0, 0));
-
+	//the hint button
 	m_recHint.setSize(sf::Vector2f(100.f, 100.f));
 	m_textureH.loadFromFile("hint.png");
 	m_recHint.setTexture(&m_textureH);
@@ -54,6 +54,7 @@ void ToolBar::init()
 
 }
 
+//draw the tool bar
 void ToolBar::drawToolBar(sf::RenderWindow& m_window)
 {
 	m_window.draw(m_outline);
@@ -61,21 +62,25 @@ void ToolBar::drawToolBar(sf::RenderWindow& m_window)
 	m_window.draw(m_recHint);
 }
 
+//check if the user prased the save button
 bool ToolBar::isButtonPrasedSave(sf::Vector2f location)
 {
 	return (m_recSave.getGlobalBounds().contains(location)); 
 }
 
+//check if the user prased the hint button
 bool ToolBar::isButtonPrasedHint(sf::Vector2f location)
 {
 	return (m_recHint.getGlobalBounds().contains(location));
 }
 
+//the tool bar text
 sf::Text& ToolBar::getText(int word)
 {
 	return m_toolbar[word];
 }
 
+//the tool bar data
 sf::Text& ToolBar::getNum(int num)
 {
 	return m_Info[num];

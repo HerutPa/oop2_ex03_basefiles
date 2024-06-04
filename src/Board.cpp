@@ -6,7 +6,7 @@ Board::Board()
 	std::random_device rd; 
 	std::mt19937 gen(rd());
 	//Grill the number of sticks on the board
-	std::uniform_int_distribution<int> dis(15, 30);
+	std::uniform_int_distribution<int> dis(35, 45);
 	//save the number of sticks
 	m_numOfStick = dis(gen); 
 }
@@ -20,15 +20,11 @@ void Board::createFile()
 	{
 		throw std::runtime_error("Unable to open file for writing");
 	}
-
-	
-
 	// Convert the integer values to strings
 	std::string score = std::to_string(m_scoreCounter);
 	std::string Available = std::to_string(m_sitckAvailableCounter);
 	std::string left = std::to_string(m_numOfStick - m_sitckTakeCounter);
 	std::string take = std::to_string(m_sitckTakeCounter);
-	//std::string time = std::to_string(m_positionY);
 
 	// Concatenate the values into a single string with a delimiter
 	std::string stickData = score + " " + Available + " " + left + " "
@@ -149,7 +145,7 @@ void Board::findStick(const sf::Vector2f location, sf::RenderWindow& window)
 			if ((*regular_it)->isEraseable())
 			{
 				m_sitckTakeCounter++;
-				m_scoreCounter += (*regular_it)->getStickScore();
+				m_scoreCounter += (*regular_it)->returnScore();
 				// Delete from the overlapped sticks the current stick
 				(*regular_it)->deleteOverLapped();
 				m_stick.erase(regular_it);

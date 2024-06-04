@@ -42,7 +42,6 @@ public:
     bool checkAvailableStick() const;
     int getColorIndex() const { return m_colorIndex; }
     int returnScore() const;
-    int getStickScore();
 
     sf::RectangleShape& getrec() const;
     const std::vector<std::shared_ptr<Stick>>& getOverLapped() const;

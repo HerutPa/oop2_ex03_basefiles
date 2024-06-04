@@ -13,29 +13,29 @@ Stick::Stick(int colorIndex, int score, int index, int positionX, int positionY,
     : m_colorIndex(colorIndex), m_score(score), m_index(index),
     m_positionX(positionX), m_positionY(positionY), m_rotation(rotation)
 {
-    // Initialize other members if needed
 }
 
 
 Stick::Stick(const int row, const int length)    
 {
+    //stick index
     m_index = row;
+    //random
     std::random_device rd;
     std::mt19937 generator(rd());
+    //random num for the position
     std::uniform_int_distribution<int> distribution_x(0.f, 90.f);
     std::uniform_int_distribution<int> distribution_y(0.f, 9.f);
     m_positionX = 300 + distribution_x(generator) * STICK_WIDTH;
     m_positionY = 100 + distribution_y(generator) * STICK_LENGTH;
+    //random num for the color
     std::uniform_int_distribution<int> distribution2(0, 5);
     int randomNumColor = distribution2(generator);
-
-
     m_colorIndex = randomNumColor; // Store the color index
-
-
+    //random num for the angel
     std::uniform_int_distribution<int> distribution3(10.f, 355.f);
     m_rotation = distribution3(generator);
-
+    //set the information
     m_stick.setSize(sf::Vector2f(length, 150));
     m_stick.setOrigin(25, 25);
     m_stick.setPosition(m_positionX, m_positionY);
@@ -47,14 +47,12 @@ Stick::Stick(const int row, const int length)
     m_stick.setOutlineColor(sf::Color::Black);
     m_location.x = m_positionX;
     m_location.y = m_positionY;
-    
     m_points[0].x = m_positionX;
     m_points[0].y = m_positionY;
     m_points[1] = getEndPoint(m_points[0], length, m_rotation);
-
-
 }
 
+//This function takes the information from the sticks vector and transfers it to a file
 std::string Stick::getStickData()
 {
     // Convert the integer values to strings
@@ -72,6 +70,7 @@ std::string Stick::getStickData()
     return stickData;
 }
 
+//This function get the EndPoint
 Point Stick::getEndPoint(const Point& startP, int length, int degree) const
 {
     // convert angle from degrees to radians
@@ -84,12 +83,13 @@ Point Stick::getEndPoint(const Point& startP, int length, int degree) const
     return { static_cast<int>(new_x), static_cast<int>(new_y) };
 }
 
-
+//This function Computes the dot product of two 2D vectors
 inline float dotProduct(const sf::Vector2f& vertex, const sf::Vector2f& axis)
 {
     return vertex.x * axis.x + vertex.y * axis.y;
 }
 
+//This funcion deletes the over lapped sticks 
 void Stick::deleteOverLapped()
 {
     for (const auto& overlappedStick : m_overlapped)
@@ -102,8 +102,12 @@ void Stick::deleteOverLapped()
 
 }
 
+//This function checks if the dtick is over lapped 
 bool Stick::isOverlaped(const sf::RectangleShape& rec1, const sf::RectangleShape& rec2)
 {
+    //This lambda function takes a `sf::RectangleShape` as input and returns a vector
+    //if its transformed vertices.It applies the rectangle's transformation and
+    //local bounds to compute the global positions of the four corners.
     auto getVertices = [](const sf::RectangleShape& rec)
     {
         sf::Transform transform = rec.getTransform();
@@ -127,15 +131,17 @@ bool Stick::isOverlaped(const sf::RectangleShape& rec1, const sf::RectangleShape
 
     for (const auto& axis : axes)
     {
+        // Initialize min and max projections for the first polygon
         float minProjection1 = std::numeric_limits<float>::max();
         float maxProjection1 = std::numeric_limits<float>::lowest();
+        // Project each vertex of the first polygon onto the current axis
         for (const auto& vertex : vertices1)
         {
             float projection = dotProduct(vertex, axis);
             minProjection1 = std::min(minProjection1, projection);
             maxProjection1 = std::max(maxProjection1, projection);
         }
-
+        // Initialize min and max projections for the second polygon
         float minProjection2 = std::numeric_limits<float>::max();
         float maxProjection2 = std::numeric_limits<float>::lowest();
         for (const auto& vertex : vertices2)
@@ -144,7 +150,7 @@ bool Stick::isOverlaped(const sf::RectangleShape& rec1, const sf::RectangleShape
             minProjection2 = std::min(minProjection2, projection);
             maxProjection2 = std::max(maxProjection2, projection);
         }
-
+        // Check if there is a gap between the projections on the current axis
         if (maxProjection1 < minProjection2 || maxProjection2 < minProjection1)
         {
             return false; // Separating axis found
@@ -157,12 +163,14 @@ bool Stick::isOverlaped(const sf::RectangleShape& rec1, const sf::RectangleShape
 //Available sticks vector update
 bool Stick::checkAvailableStick() const
 {
+    //if the vector is empty 
     if (this->m_overlapped.empty()) 
     {
         return true;
     }
     else
     {
+        //if the current stick index is not the biggest 
         for (const auto& stickCur : m_overlapped)
         {
             if (getIndex() < stickCur->getIndex())
@@ -174,13 +182,7 @@ bool Stick::checkAvailableStick() const
     return true;
 }
 
-
-int Stick::returnScore() const
-{
-    return m_score;
-}
-
-
+//This function checks if the stick that the user clicked on can be deleted
 bool Stick::isEraseable() const
 {
     for (const auto& overlappedStick : m_overlapped)
@@ -198,14 +200,12 @@ int Stick::min(int a, int b) const
 {
     return (a < b) ? a : b;
 }
-
-
 int Stick::max(int a, int b) const
 {
     return (a > b) ? a : b;
 }
 
-
+//This function adds the stick to the over laped vector
 void Stick::addOverLapped(const std::shared_ptr<Stick>& overlap)
 {
     m_overlapped.push_back(overlap);
@@ -267,7 +267,7 @@ bool Stick::doIntersect(Point p1, Point q1, Point p2, Point q2) const
     return false; // Doesn't fall in any of the above cases 
 }
 
-
+//This function sets the point of the stick
 Point Stick::getPoint(int index) const
 {
     if (index != 0 && index != 1)
@@ -284,55 +284,49 @@ sf::RectangleShape& Stick::getrec() const
     return const_cast<sf::RectangleShape&>(m_stick);
 }
 
-
+//rtuen the stick index
 const int Stick::getIndex() const 
 {
     return m_index;
 }
 
-
+//return the stick location 
 const sf::Vector2f Stick::getLocation() const 
 {
     return m_location;
 }
 
-
+//set the color of the stick
 void Stick::setColor(const sf::Color& color)
 {
     m_stick.setFillColor(color);
-    std::cout << "after set color    ";
-
 }
 
-//sf::RectangleShape& Stick::getShape() 
-//{
-//    return m_stick;
-//}
-
+//return the stick shape
 const sf::RectangleShape& Stick::getShape() const 
 {
     return m_stick;
 }
 
+//reset the stick color
 void Stick::resetColor()
 {
     m_stick.setFillColor(m_currentColor);
-    std::cout << "after reset color   ";
-
 }
 
-
+//This function checks whether the user pressed the stick
 bool Stick::isLocationInside(const sf::Vector2f& location) const
 {
     return m_stick.getLocalBounds().contains(m_stick.getInverseTransform().transformPoint(location));
 }
 
-
-int Stick::getStickScore()
+//Returns the stick score
+int Stick::returnScore() const
 {
     return m_score;
 }
 
+//Returns the over lapped vector
 const std::vector<std::shared_ptr<Stick>>& Stick::getOverLapped() const 
 {
     return m_overlapped;
