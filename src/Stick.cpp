@@ -8,15 +8,24 @@ Stick::Stick()
 {
 } 
 
-Stick::Stick(const int row, const int length)
+// Constructor for Stick class
+Stick::Stick(int colorIndex, int score, int index, int positionX, int positionY, int rotation)
+    : m_colorIndex(colorIndex), m_score(score), m_index(index),
+    m_positionX(positionX), m_positionY(positionY), m_rotation(rotation)
+{
+    // Initialize other members if needed
+}
+
+
+Stick::Stick(const int row, const int length)    
 {
     m_index = row;
     std::random_device rd;
     std::mt19937 generator(rd());
     std::uniform_int_distribution<int> distribution_x(0.f, 90.f);
     std::uniform_int_distribution<int> distribution_y(0.f, 9.f);
-    int x = 300 + distribution_x(generator) * STICK_WIDTH;
-    int y = 100 + distribution_y(generator) * STICK_LENGTH;
+    m_positionX = 300 + distribution_x(generator) * STICK_WIDTH;
+    m_positionY = 100 + distribution_y(generator) * STICK_LENGTH;
     std::uniform_int_distribution<int> distribution2(0, 5);
     int randomNumColor = distribution2(generator);
 
@@ -25,26 +34,43 @@ Stick::Stick(const int row, const int length)
 
 
     std::uniform_int_distribution<int> distribution3(10.f, 355.f);
-    int randomNumAngel = distribution3(generator);
+    m_rotation = distribution3(generator);
 
     m_stick.setSize(sf::Vector2f(length, 150));
     m_stick.setOrigin(25, 25);
-    m_stick.setPosition(x, y);
-    m_stick.setRotation(randomNumAngel);
-    //m_currentColor = m_stick.setFillColor(Resources::instance().getColorArray()[randomNumColor]);
+    m_stick.setPosition(m_positionX, m_positionY);
+    m_stick.setRotation(m_rotation);
     m_currentColor = Resources::instance().getColorArray()[randomNumColor];
     m_score = (6-randomNumColor);
     m_stick.setFillColor(m_currentColor);
     m_stick.setOutlineThickness(OUTLINE);
     m_stick.setOutlineColor(sf::Color::Black);
-    m_location.x = x;
-    m_location.y = y;
+    m_location.x = m_positionX;
+    m_location.y = m_positionY;
     
-    m_points[0].x = x;
-    m_points[0].y = y;
-    m_points[1] = getEndPoint(m_points[0], length, randomNumAngel);
+    m_points[0].x = m_positionX;
+    m_points[0].y = m_positionY;
+    m_points[1] = getEndPoint(m_points[0], length, m_rotation);
+
+
 }
 
+std::string Stick::getStickData()
+{
+    // Convert the integer values to strings
+    std::string colorIndexStr = std::to_string(m_colorIndex);
+    std::string scoreStr = std::to_string(m_score);
+    std::string indexStr = std::to_string(m_index);
+    std::string positionXStr = std::to_string(m_positionX);
+    std::string positionYStr = std::to_string(m_positionY);
+    std::string rotationStr = std::to_string(m_rotation);
+
+    // Concatenate the values into a single string with a delimiter
+    std::string stickData = colorIndexStr + " " + scoreStr + " " + indexStr + " "
+        + positionXStr + " " + positionYStr + " " + rotationStr;
+
+    return stickData;
+}
 
 Point Stick::getEndPoint(const Point& startP, int length, int degree) const
 {
@@ -265,12 +291,6 @@ const int Stick::getIndex() const
 }
 
 
-const sf::Color Stick::getColor() const 
-{
-    return m_stick.getFillColor();
-}
-
-
 const sf::Vector2f Stick::getLocation() const 
 {
     return m_location;
@@ -284,10 +304,10 @@ void Stick::setColor(const sf::Color& color)
 
 }
 
-sf::RectangleShape& Stick::getShape() 
-{
-    return m_stick;
-}
+//sf::RectangleShape& Stick::getShape() 
+//{
+//    return m_stick;
+//}
 
 const sf::RectangleShape& Stick::getShape() const 
 {
@@ -313,3 +333,7 @@ int Stick::getStickScore()
     return m_score;
 }
 
+const std::vector<std::shared_ptr<Stick>>& Stick::getOverLapped() const 
+{
+    return m_overlapped;
+}

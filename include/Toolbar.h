@@ -31,7 +31,6 @@ private:
 	Board m_board;
 
 	int m_info_num[TOOL_BAR];
-	int m_sticksNum;
 
 	sf::RectangleShape m_outline;
 	sf::RectangleShape m_recHint;

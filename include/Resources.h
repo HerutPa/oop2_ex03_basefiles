@@ -24,9 +24,7 @@ enum ToolBarWord
 
 enum Textures
 {
-    X_texture,
     Background,
-    Back,
     Label,
     GameBackground,
     YouWin,
@@ -46,15 +44,12 @@ const int WINDOW_WIDTH = 1400;
 
 //stick
 const int ROW = 15; 
-const int COL = 10; 
-const int RADIUS = 10;
 const int OUTLINE = 3;
 const int LENGTH = 60;
-
 const int WIDTH = 5;
 const float STICK_WIDTH = WIDTH + (2 * OUTLINE);
 const float STICK_LENGTH = LENGTH + (2 * OUTLINE);
-const float HEX_WIDTH = RADIUS * std::sqrt(3.f) + (2*OUTLINE);
+const float HEX_WIDTH = 10 * std::sqrt(3.f) + (2*OUTLINE);
 const int TOOL_BAR = 5;
 
 //enums

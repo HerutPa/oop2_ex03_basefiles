@@ -23,13 +23,14 @@ class Stick
 {
 public:
     Stick();
+    Stick(int colorIndex, int score, int index, int positionX, int positionY, int rotation);
     Stick(const int row, const int length);
+
+    std::string getStickData();
     
     const sf::RectangleShape& getShape() const;
     const sf::Vector2f getLocation() const;
-    const sf::Color getColor() const;
     const int getIndex() const;
-
     void addOverLapped(const std::shared_ptr<Stick>& overlap);
     void setColor(const sf::Color& color);
     void deleteOverLapped();
@@ -39,14 +40,12 @@ public:
     bool isLocationInside(const sf::Vector2f& location) const;
     bool isEraseable() const;
     bool checkAvailableStick() const;
-
     int getColorIndex() const { return m_colorIndex; }
     int returnScore() const;
-    int getOverLappedSize();
     int getStickScore();
 
     sf::RectangleShape& getrec() const;
-    sf::RectangleShape& getShape();
+    const std::vector<std::shared_ptr<Stick>>& getOverLapped() const;
 
 private:
     Point getEndPoint(const Point& startP, int length, int degree) const;
@@ -68,12 +67,12 @@ private:
     int m_colorIndex;
     int m_score = 0;
     int m_index;
+    int m_positionX;
+    int m_positionY;
+    int m_rotation;
 
     bool doIntersect(Point p1, Point q1, Point p2, Point q2) const;
     bool onSegment(Point p, Point q, Point r) const;
-    bool m_isColor1 = true;
-
-    void setColor(const Colors);
 
 };
 

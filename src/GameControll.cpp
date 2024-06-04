@@ -2,11 +2,14 @@
 
 
 GameControll::GameControll()
-    :m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Pick Up Sticks"), m_game_over(false)
+    :m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Pick Up Sticks")
 {
     m_window.setFramerateLimit(60);
-    m_YouWin.setTexture(Resources::instance().getTexture(YouWin));
-    m_YouLose.setTexture(Resources::instance().getTexture(YouLose));    // locateObjects();
+    m_youWin.setTexture(Resources::instance().getTexture(YouWin));
+    m_youWin.scale(2.5f, 2.5f);
+    m_youLose.setTexture(Resources::instance().getTexture(YouLose));    // locateObjects();
+    m_youLose.scale(1.7f, 1.7f);
+
 }
 
 //This function is responsible for the course of the game
@@ -83,15 +86,23 @@ void GameControll::handleMenuClick(const sf::Vector2f location)
     {
         //rest the clocks
         m_MoveClock.restart();
-        m_GameClock.restart();
         //open the game window
+        init();
+        m_GameClock.restart();
         startGame();
     }
     //load a file of the game
     else if (m_menu.getButton(Continue).getGlobalBounds().contains(location))
     {
-        continueGame();
-
+        try
+        {
+            m_board.readFile("Board.txt");
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "Error reading file: " << e.what() << std::endl;
+        }
+        startGame();
     }
     //exit the game
     if (m_menu.getButton(Exit).getGlobalBounds().contains(location))
@@ -103,8 +114,6 @@ void GameControll::handleMenuClick(const sf::Vector2f location)
 //This function initializes the game
 void GameControll::init()
 {
-    m_game_over = false;
-    int number = 0;
     m_board.init();
     m_toolBar.init();
 }
@@ -112,26 +121,25 @@ void GameControll::init()
 //This function serves as the main game loop
 void GameControll::startGame()
 {
-    init();
-    m_GameClock.restart();
     //As long as the user did not exit the game, this loop ran
-    while (m_window.isOpen() && !m_game_over)
+    while (m_window.isOpen())
     {
         m_window.clear(WINDOW_COLOR);
         //Drawing the game board
         m_board.drawBoard(this->m_window);
+
         //Drawing the game menu on the board
         m_toolBar.drawToolBar(m_window);
+
         //fill Available vector 
         m_board.fillAvailableSticks();
+
         //update the game data 
         UpdateData();
+
         drawToolBar();
         m_window.display();
-
-        //auto event = sf::Event{};
-        //while (window->pollEvent(event))
-        //{
+        
         //Waiting for the user's action on the game board
         auto event = sf::Event{};
         while ( m_window.pollEvent(event))
@@ -157,11 +165,9 @@ void GameControll::startGame()
         }
         //If the time runs out before the user has finished collecting 
         //all the sticks = he has lost
-        if (m_GameClock.getElapsedTime().asSeconds() > 40)
+        if (m_GameClock.getElapsedTime().asSeconds() > 50)
         {
             //Loading next window
-            m_youLose.setTexture(Resources::instance().getTexture(YouLose));
-            m_youLose.scale(1.7f, 1.7f);
             m_window.clear(sf::Color::Color(0, 102, 102));
             m_window.draw(m_youLose);
             //Displaying the score in the new window
@@ -179,8 +185,6 @@ void GameControll::startGame()
         if (m_board.returnSticksLeft() == 0)
         {
             //Loading next window
-            m_youWin.setTexture(Resources::instance().getTexture(YouWin));
-            m_youWin.scale(2.5f, 2.5f);
             m_window.clear(sf::Color::Color(0, 102, 102));
             m_window.draw(m_youWin);
             //Displaying the score in the new window
@@ -210,7 +214,7 @@ void GameControll::handleClick(const sf::Vector2f& location)
         //Check if he clicked create file
         if (m_toolBar.isButtonPrasedSave(location))
         {
-            m_board.createFile(m_ofile);
+            m_board.createFile();
             return;
         }
         //Checking if he clicked on a hint
@@ -222,7 +226,7 @@ void GameControll::handleClick(const sf::Vector2f& location)
     //Checking if he pressed one of the sticks on the board
     else
     {
-        m_board.findStick(location);
+        m_board.findStick(location, m_window);
     }
 
 }
@@ -235,12 +239,6 @@ void GameControll::drawToolBar()
         m_window.draw(m_toolBar.getText(word));
         m_window.draw(m_toolBar.getNum(word));
     }
-}
-
-//
-void GameControll::continueGame()
-{
-
 }
 
 //This function updates the details in the tool bar

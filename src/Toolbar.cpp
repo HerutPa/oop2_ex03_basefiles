@@ -83,7 +83,7 @@ sf::Text& ToolBar::getNum(int num)
 
 void ToolBar::setTime(const int time)
 {
-	m_info_num[TIME] = 40 - time;
+	m_info_num[TIME] = 50 - time;
 	m_Info[TIME].setString(std::to_string(m_info_num[TIME]));
 }
 

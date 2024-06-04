@@ -40,10 +40,8 @@ const sf::Font& Resources::getFont()const
 //Load From File
 void Resources::LoadFromFile()
 {
-	m_textures[X_texture].loadFromFile("X.png");
 	m_textures[Background].loadFromFile("Background.png");
 	m_textures[Background].setSmooth(true);
-	m_textures[Back].loadFromFile("Back.png");
 	m_textures[Label].loadFromFile("Label.png");
 	m_textures[GameBackground].loadFromFile("GameBackground.png");
 	m_textures[GameBackground].setSmooth(true);
