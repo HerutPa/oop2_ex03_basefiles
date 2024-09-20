@@ -12,7 +12,6 @@ Board::Board()
 }
 
 //This function creates and opens an existing file for the game board. 
-
 void Board::createFile()
 {
 	std::ofstream file("Board.txt");
@@ -79,9 +78,6 @@ void Board::readFile(const std::string& filename)
 
 
 }
-
-
-
 
 
 //This function checks the integrity of the file.
